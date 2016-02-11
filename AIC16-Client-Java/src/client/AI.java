@@ -51,7 +51,7 @@ public class AI {
                             world.moveArmy(source, destination, source.getArmyCount());
                         else if (ArmyLevel.ComputeArmyLevel(world, destination) == ArmyLevel.ArmyLevelEnum.Medium &&
                                 ArmyLevel.ComputeArmyLevel(world, source) == ArmyLevel.ArmyLevelEnum.High)
-                            world.moveArmy(source, destination, source.getArmyCount()); 
+                            world.moveArmy(source, destination, source.getArmyCount());
                     }
                 }
 
