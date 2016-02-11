@@ -1,0 +1,6 @@
+.DS_Store
+client/.idea/*
+*.pyc
+AIC16-Client-Java/.idea
+AIC16-Client-Java/out
+AIC16-Client-Java/AIC16-Client-Java.iml
