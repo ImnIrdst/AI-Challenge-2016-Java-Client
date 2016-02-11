@@ -10,7 +10,7 @@ public class Node {
     private int armyCount;
     private Node[] neighbours;
 
-    Node(int index) {
+    public Node(int index) {
         this.index = index;
         this.owner = -1;
     }
@@ -58,7 +58,7 @@ public class Node {
         return armyCount;
     }
 
-    void setNeighbours(Node[] neighbours) {
+    public void setNeighbours(Node[] neighbours) {
         this.neighbours = neighbours;
     }
 

@@ -25,11 +25,7 @@ public class APSP {
 	public static void initialize(World world){
 		APSP.world = world;
 		APSP.n = world.getMap().getNodes().length;
-		dist = new int[n][n];
-		for (int i=0 ; i<n ; i++) {
-			Arrays.fill(dist[i], (int)1e6);
-			dist[i][i] = 0;
-		}
+		computeAPSP();
 	}
 
 	/**
@@ -39,7 +35,6 @@ public class APSP {
 	 * @return distance between nodes
 	 */
 	public static int getDist(int u, int v){
-		if (dist == null) computeAPSP();
 		return dist[u][v];
 	}
 
@@ -48,6 +43,13 @@ public class APSP {
 	 * // TODO: Maybe this needs to be implemented using dijkstra algorithm.
 	 */
 	private static void computeAPSP(){
+		// initialize dist array
+		dist = new int[n][n];
+		for (int i=0 ; i<n ; i++) {
+			Arrays.fill(dist[i], Consts.INF); dist[i][i] = 0;
+		}
+
+		// run BFS from each node to fill the APSP array
 		Queue<Node> queue = new LinkedList<>();
 		for (Node s : world.getMap().getNodes()){
 			queue.clear(); queue.add(s);

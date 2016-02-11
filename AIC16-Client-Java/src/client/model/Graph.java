@@ -8,7 +8,7 @@ package client.model;
 public class Graph {
     private Node[] nodes;
 
-    Graph(Node[] nodes) {
+    public Graph(Node[] nodes) {
         this.nodes = nodes;
     }
 
