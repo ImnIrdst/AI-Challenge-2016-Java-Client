@@ -10,6 +10,9 @@ import client.model.Node;
  */
 public class ArmyLevel {
 
+    /**
+     * Enum for all types of army level
+     */
     public enum ArmyLevelEnum {
         FreeNode,
         Low,
@@ -17,11 +20,21 @@ public class ArmyLevel {
         High
     }
 
+
+    /**
+     *
+     * @param world World we are playing in
+     * @param node node to compute the army level for
+     * @return army level for the given node
+     */
     public static ArmyLevelEnum ComputeArmyLevel(World world, Node node) {
-        if (node.getOwner() == -1) {
+        if (node.getOwner() == -1) { // Check if node dose not have owner
             return ArmyLevelEnum.FreeNode;
         } else {
             int armyCount = node.getArmyCount();
+            // The output will be exact when the node is ours
+            // and bounds if node is for enemy
+
             if (armyCount < world.getLowArmyBound()) {
                 return ArmyLevelEnum.Low;
             } else if (armyCount < world.getMediumArmyBound()) {
