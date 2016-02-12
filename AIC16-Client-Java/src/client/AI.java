@@ -41,21 +41,26 @@ public class AI {
                 }
 
                 for (Node destination: free_neighbors) {
-                    world.moveArmy(source, destination, source.getArmyCount()/free_neighbors.size());
+                    world.moveArmy(source, destination, source.getArmyCount()/2);
+                    break;
                 }
 
                 if (free_neighbors.isEmpty()) {
                     for (Node destination: enemy_neighbors) {
                         if (ArmyLevel.ComputeArmyLevel(world, destination) == ArmyLevel.ArmyLevelEnum.Low &&
-                                ArmyLevel.ComputeArmyLevel(world, source) != ArmyLevel.ArmyLevelEnum.Low)
+                                ArmyLevel.ComputeArmyLevel(world, source) != ArmyLevel.ArmyLevelEnum.Low) {
                             world.moveArmy(source, destination, source.getArmyCount());
+                            break;
+                        }
                         else if (ArmyLevel.ComputeArmyLevel(world, destination) == ArmyLevel.ArmyLevelEnum.Medium &&
-                                ArmyLevel.ComputeArmyLevel(world, source) == ArmyLevel.ArmyLevelEnum.High)
+                                ArmyLevel.ComputeArmyLevel(world, source) == ArmyLevel.ArmyLevelEnum.High) {
                             world.moveArmy(source, destination, source.getArmyCount());
+                            break;
+                        }
                     }
                 }
 
-                if (free_neighbors.isEmpty() && enemy_neighbors.isEmpty() && neighbours.length != 0) {
+                if (free_neighbors.isEmpty() && enemy_neighbors.isEmpty()) {
                     // select a random neighbour
                     Node destination = neighbours[(int) (neighbours.length * Math.random())];
 
