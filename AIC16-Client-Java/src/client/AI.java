@@ -1,6 +1,8 @@
 package client;
 
 import client.model.Node;
+import client.utils.APSP;
+import client.utils.CGP;
 
 /**
  * AI class.
@@ -16,7 +18,8 @@ public class AI {
 
     public void doTurn(World world) {
         // fill this method, we've presented a stupid AI for example!
-
+        APSP.initialize(world);
+        CGP.initialize(world);
         Node[] myNodes = world.getMyNodes();
         for (Node source : myNodes) {
 
