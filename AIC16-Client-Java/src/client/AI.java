@@ -1,6 +1,9 @@
 package client;
 import client.model.Node;
 import client.utils.ArmyLevel;
+import client.utils.Logger;
+import client.utils.Path;
+
 import java.util.*;
 
 /**
@@ -43,9 +46,8 @@ public class AI {
                     world.moveArmy(source, free_neighbors.get(rnd), source.getArmyCount()/2);
                 }
 
-                Collections.shuffle(enemy_neighbors, random);
-
                 if (free_neighbors.isEmpty()) {
+                    Collections.shuffle(enemy_neighbors, random);
                     for (Node destination: enemy_neighbors) {
                         if (ArmyLevel.ComputeArmyLevel(world, destination) == ArmyLevel.ArmyLevelEnum.Low &&
                                 ArmyLevel.ComputeArmyLevel(world, source) != ArmyLevel.ArmyLevelEnum.Low) {
@@ -62,10 +64,16 @@ public class AI {
 
                 if (free_neighbors.isEmpty() && enemy_neighbors.isEmpty()) {
                     // select a random neighbour
-                    Node destination = neighbours[(int) (neighbours.length * Math.random())];
+                    ArrayList<Node> testPath = Path.FindNearestEnemyNode(world, source);
+                    if (testPath != null) {
+                        Node t = testPath.get(testPath.size() - 2);
+                        world.moveArmy(source, t, source.getArmyCount());
+                    } else {
+                        Node destination = neighbours[(int) (neighbours.length * Math.random())];
 
-                    // move half of the node's army to the neighbor node
-                    world.moveArmy(source, destination, source.getArmyCount()/2);
+                        // move half of the node's army to the neighbor node
+                        world.moveArmy(source, destination, source.getArmyCount() / 2);
+                    }
                 }
             }
         }
