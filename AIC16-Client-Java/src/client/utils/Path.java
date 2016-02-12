@@ -28,7 +28,7 @@ public class Path {
 
         while (!Q.isEmpty()) {
             Node node = Q.remove();
-            if (node.getOwner() != world.getMyID() && node.getOwner() != -1) {
+            if (node.getOwner() != world.getMyID()) {
                 to = node;
                 break;
             }
@@ -39,7 +39,7 @@ public class Path {
             for (Node neighbor :
                     node.getNeighbours()) {
                 int neighborDistance = Distance.getOrDefault(neighbor.getIndex(), INF);
-                if (neighborDistance > nodeDistance + 1 && neighbor.getOwner() != -1) {
+                if (neighborDistance > nodeDistance + 1) {
                     Distance.put(neighbor.getIndex(), nodeDistance + 1);
                     Q.add(neighbor);
                     Parents.put(neighbor.getIndex(), node.getIndex());

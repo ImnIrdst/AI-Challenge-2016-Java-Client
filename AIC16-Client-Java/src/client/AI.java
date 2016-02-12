@@ -43,7 +43,7 @@ public class AI {
                 if (!free_neighbors.isEmpty()) {
                     int count = free_neighbors.size();
                     int rnd = random.nextInt(count);
-                    world.moveArmy(source, free_neighbors.get(rnd), source.getArmyCount()/2);
+                    world.moveArmy(source, free_neighbors.get(rnd), source.getArmyCount());
                 }
 
                 if (free_neighbors.isEmpty()) {
