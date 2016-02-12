@@ -1,11 +1,7 @@
 package client;
 import client.model.Node;
 import client.utils.ArmyLevel;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.logging.Logger;
+import java.util.*;
 
 /**
  * AI class.
@@ -18,6 +14,7 @@ import java.util.logging.Logger;
  * See World interface for more details.
  */
 public class AI {
+    Random random = new Random();
 
     public void doTurn(World world) {
         // fill this method, we've presented a stupid AI for example!
@@ -29,9 +26,8 @@ public class AI {
             Node[] neighbours = source.getNeighbours();
             if (neighbours.length > 0) {
 
-                Node[] freeNodes = world.getFreeNodes();
-                Queue<Node> free_neighbors= new LinkedList<Node>();
-                Queue<Node> enemy_neighbors= new LinkedList<Node>();
+                ArrayList<Node> free_neighbors= new ArrayList<>();
+                ArrayList<Node> enemy_neighbors= new ArrayList<>();
 
                 for (Node neighbor : neighbours) {
                     if (neighbor.getOwner() == -1) // Check if neighbor if free
@@ -40,10 +36,14 @@ public class AI {
                         enemy_neighbors.add(neighbor);
                 }
 
-                for (Node destination: free_neighbors) {
-                    world.moveArmy(source, destination, source.getArmyCount()/2);
-                    break;
+
+                if (!free_neighbors.isEmpty()) {
+                    int count = free_neighbors.size();
+                    int rnd = random.nextInt(count);
+                    world.moveArmy(source, free_neighbors.get(rnd), source.getArmyCount()/2);
                 }
+
+                Collections.shuffle(enemy_neighbors, random);
 
                 if (free_neighbors.isEmpty()) {
                     for (Node destination: enemy_neighbors) {
