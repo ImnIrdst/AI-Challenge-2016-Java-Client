@@ -13,8 +13,8 @@ import java.util.*;
 public class CGP {
 
     private static World world;
-    private static ArrayList<ArrayList<Node>> mySections;       // group of nearby cells
-    private static ArrayList<ArrayList<Node>> enemySections;    // group of enemies nearby cells
+    private static ArrayList<ArrayList<Node>> mySections;       // Connected sub Graph Parts of my nodes
+    private static ArrayList<ArrayList<Node>> enemySections;    // Connected sub Graph Parts of enemy nodes
     private static final String TAG = "GPS";
     private static final boolean debug = false;
 
@@ -96,7 +96,8 @@ public class CGP {
     public static boolean isNodeBorder(Node node) {
         for (Node neighbor : node.getNeighbours()) {
 
-            if (neighbor.getOwner() != world.getMyID()) // enemy cell or empty cell
+            // if neighbor owner is not node's owner this means it is not in border
+            if (neighbor.getOwner() != node.getOwner())
                 return true;
         }
         return false;
@@ -112,6 +113,7 @@ public class CGP {
 
     /**
      * this function returns my sub connected graph parts
+     *
      * @return list of sub connected graph parts that each contain a ArrayList<Node>
      */
     public static ArrayList<ArrayList<Node>> getMyCGParts() {
@@ -121,6 +123,7 @@ public class CGP {
 
     /**
      * this function returns enemy sub connected graph parts
+     *
      * @return list of sub connected graph parts that each contain a ArrayList<Node>
      */
     public static ArrayList<ArrayList<Node>> getEnemyCGParts() {
@@ -129,6 +132,7 @@ public class CGP {
 
     /**
      * this function tells Node n is in witch sub connected graph
+     *
      * @param node
      * @return the index of subconnected graph
      */
@@ -139,7 +143,7 @@ public class CGP {
         return enemyNodeSectionMap.get(node.getIndex());
     }
 
-//    return a list of border nodes
+    //    return a list of border nodes
     private static ArrayList<ArrayList<Node>> getCGPBorders(ArrayList<ArrayList<Node>> section) {
         ArrayList<ArrayList<Node>> answer = new ArrayList<>();
 
@@ -159,20 +163,21 @@ public class CGP {
 
     /**
      * this function is same as getMyCGParts but only has node which are border nodes
+     *
      * @return list of sub connected graph parts that each contain a ArrayList<Node>
      */
-    public static ArrayList<ArrayList<Node>> getMyCGPBorders(){
+    public static ArrayList<ArrayList<Node>> getMyCGPBorders() {
         return getCGPBorders(mySections);
     }
 
     /**
      * this function is same as getEnemyCGParts but only has node which are border nodes
+     *
      * @return list of sub connected graph parts that each contain a ArrayList<Node>
      */
-    public static ArrayList<ArrayList<Node>> getEnemyCGPBorders(){
+    public static ArrayList<ArrayList<Node>> getEnemyCGPBorders() {
         return getCGPBorders(enemySections);
     }
-
 
 
 }
