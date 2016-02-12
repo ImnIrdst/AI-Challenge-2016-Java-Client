@@ -114,7 +114,7 @@ public class CGP {
     /**
      * this function returns my sub connected graph parts
      *
-     * @return list of sub connected graph parts that each contain a ArrayList<Node>
+     * @return list of sub connected graph parts that each contain a ArrayList Node
      */
     public static ArrayList<ArrayList<Node>> getMyCGParts() {
         return mySections;
@@ -124,7 +124,7 @@ public class CGP {
     /**
      * this function returns enemy sub connected graph parts
      *
-     * @return list of sub connected graph parts that each contain a ArrayList<Node>
+     * @return list of sub connected graph parts that each contain a ArrayList Node
      */
     public static ArrayList<ArrayList<Node>> getEnemyCGParts() {
         return enemySections;
@@ -164,7 +164,7 @@ public class CGP {
     /**
      * this function is same as getMyCGParts but only has node which are border nodes
      *
-     * @return list of sub connected graph parts that each contain a ArrayList<Node>
+     * @return list of sub connected graph parts that each contain a ArrayList Node
      */
     public static ArrayList<ArrayList<Node>> getMyCGPBorders() {
         return getCGPBorders(mySections);
@@ -173,7 +173,7 @@ public class CGP {
     /**
      * this function is same as getEnemyCGParts but only has node which are border nodes
      *
-     * @return list of sub connected graph parts that each contain a ArrayList<Node>
+     * @return list of sub connected graph parts that each contain a ArrayList Node
      */
     public static ArrayList<ArrayList<Node>> getEnemyCGPBorders() {
         return getCGPBorders(enemySections);
