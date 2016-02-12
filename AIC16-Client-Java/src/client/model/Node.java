@@ -62,11 +62,11 @@ public class Node {
         this.neighbours = neighbours;
     }
 
-    void setOwner(int owner) {
+    public void setOwner(int owner) {
         this.owner = owner;
     }
 
-    void setArmyCount(int armyCount) {
+    public void setArmyCount(int armyCount) {
         this.armyCount = armyCount;
     }
 
