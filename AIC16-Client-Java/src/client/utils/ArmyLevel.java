@@ -11,7 +11,7 @@ import client.model.Node;
 public class ArmyLevel {
 
     public enum ArmyLevelEnum {
-        FreeNode,
+        FreeNode ,
         Low,
         Medium,
         High
