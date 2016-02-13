@@ -1,8 +1,12 @@
 package client;
 
 import client.model.Node;
+import client.scoring.NodeScorePair;
+import client.scoring.Scoring;
 import client.utils.APSP;
 import client.utils.CGP;
+
+import java.util.Arrays;
 
 /**
  * AI class.
@@ -15,26 +19,30 @@ import client.utils.CGP;
  * See World interface for more details.
  */
 public class AI {
+    private World world;
 
-    public void doTurn(World world) {
-        // fill this method, we've presented a stupid AI for example!
+    private void initialize(World world){
+        this.world = world;
         APSP.initialize(world);
         CGP.initialize(world);
+    }
+
+    public void doTurn(World world) {
+        initialize(world);
+
+        // fill this method, we've presented a stupid AI for example!
         Node[] myNodes = world.getMyNodes();
-        for (Node source : myNodes) {
 
-            // get neighbours
-            Node[] neighbours = source.getNeighbours();
-            if (neighbours.length > 0) {
+        // compute nodeScores
+        Scoring.computeScoresForAllNodes(world);
 
-                // select a random neighbour
-                Node destination = neighbours[(int) (neighbours.length * Math.random())];
+        for (Node cur : myNodes) {
+            if(cur.neighborScores.length == 0) continue;
 
-                // move half of the node's army to the neighbor node
-                world.moveArmy(source, destination, source.getArmyCount()/2);
-            }
+            NodeScorePair[] neighbourScores = cur.neighborScores;
+            Arrays.sort(neighbourScores);
+            world.moveArmy(cur, neighbourScores[0].node, cur.getArmyCount());
         }
-
     }
 
 }

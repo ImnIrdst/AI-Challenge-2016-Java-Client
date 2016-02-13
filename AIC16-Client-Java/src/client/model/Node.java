@@ -1,18 +1,34 @@
 package client.model;
 
+import client.scoring.NodeScorePair;
+import client.scoring.NodePriority;
+
 /**
  * Graph Node
  * Please do not change this class.
  */
-public class Node {
+public class Node implements Comparable<Node> {
     private int index;
     private int owner;
     private int armyCount;
     private Node[] neighbours;
 
+	// Defined by me.
+	public long selfScore;
+	public NodePriority priority;
+	public NodeScorePair[] neighborScores;
+
     public Node(int index) {
         this.index = index;
         this.owner = -1;
+    }
+
+    public NodePriority getPriority() {
+        return priority;
+    }
+
+    public NodeScorePair[] getNeighborScores() {
+        return neighborScores;
     }
 
     /**
@@ -60,6 +76,9 @@ public class Node {
 
     public void setNeighbours(Node[] neighbours) {
         this.neighbours = neighbours;
+	    this.neighborScores = new NodeScorePair[neighbours.length];
+	    for (int i=0 ; i<neighbours.length ; i++)
+		    this.neighborScores[i].node = neighbours[i];
     }
 
     public void setOwner(int owner) {
@@ -73,4 +92,9 @@ public class Node {
     void setIndex(int index) {
         this.index = index;
     }
+
+	@Override
+	public int compareTo(Node o) {
+		return priority.compareTo(o.priority);
+	}
 }
