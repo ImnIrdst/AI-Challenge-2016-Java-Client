@@ -1,4 +1,4 @@
-package client.utils;
+package client.score;
 
 /**
  * Created by al on 2/12/16.

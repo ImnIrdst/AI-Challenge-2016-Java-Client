@@ -1,14 +1,12 @@
 package client;
 
 import client.model.Node;
+import client.score.ScoreHolder;
+import client.score.ScoreSystem;
 import client.utils.*;
-import org.mockito.internal.util.collections.ArrayUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * AI class.
@@ -30,32 +28,42 @@ public class AI {
         APSP.initialize(world);
         CGP.initialize(world);
         ScoreSystem.initialize(world);
+
         Node[] myNodes = world.getMyNodes();
         Logger.log(TAG, world.getMyNodes().length + " tedade node haye man", debug);
         boolean[] isAPathAssignedToNode = new boolean[world.getMap().getNodes().length];
         Arrays.fill(isAPathAssignedToNode, false);
 
-//        TODO find best score before doing in a loop , in other words sort myNodes by leastScore in their ScoreSystem
         for (Node source : myNodes) {
+            if (!NodeDetails.isAllNeighboursMine(source)) { //bfs to the best node
+                Node to = world.getMap().getNode(ScoreSystem.getScoresListFromNode(source).get(0).getDstIndex());
+                ArrayList<Node> list = Path.FindNearestEnemyNode(world, source, to);
+                Node dest = list.get(list.size() - 2);
+                world.moveArmy(source, dest, source.getArmyCount());
 
-            for (ScoreHolder score : ScoreSystem.getScoresListFromNode(source)) {
-                if (!isAPathAssignedToNode[score.getDstIndex()]) {
-                    boolean breakFree = false;
-                    for (Node dst : source.getNeighbours()) {   //TODO if Contst are good , neighbour will be choosen first
-                        //TODO or set path , not just move
-                        if (dst.getIndex() == score.getDstIndex()) {
-                            isAPathAssignedToNode[score.getDstIndex()] = true;
-//                    TODO armycount/2 is not good
-                            world.moveArmy(score.getSrcIndex(), score.getDstIndex(), source.getArmyCount() );
-                            breakFree = true;
-                            break;
-                        }
-                    }
-                    if (breakFree)
-                        break;
-                }
+                Logger.log(TAG, "created a path from " + source.getIndex() +
+                        " to " + to.getIndex() + " by neighbour " + dest.getIndex(), debug);
+                continue;
             }
 
+            for (ScoreHolder score : ScoreSystem.getScoresListFromNode(source)) {
+//                NodeDetails.isFreeNode(world, score.getDstIndex()) &&
+                if (isAPathAssignedToNode[score.getDstIndex()])
+                    continue;
+
+                boolean breakFree = false;
+                for (Node dst : source.getNeighbours()) {
+                    if (dst.getIndex() == score.getDstIndex()) {
+                        isAPathAssignedToNode[score.getDstIndex()] = true;
+                        world.moveArmy(score.getSrcIndex(), score.getDstIndex(), source.getArmyCount());
+                        breakFree = true;
+                        break;
+                    }
+                }
+
+                if (breakFree)
+                    break;
+            }
         }
 
     }

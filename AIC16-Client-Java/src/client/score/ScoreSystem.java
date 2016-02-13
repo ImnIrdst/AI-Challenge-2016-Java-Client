@@ -1,7 +1,8 @@
-package client.utils;
+package client.score;
 
 import client.World;
 import client.model.Node;
+import client.utils.*;
 
 import java.util.*;
 
