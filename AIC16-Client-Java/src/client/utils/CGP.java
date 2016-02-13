@@ -15,8 +15,13 @@ public class CGP {
     private static World world;
     private static ArrayList<ArrayList<Node>> mySections;       // Connected sub Graph Parts of my nodes
     private static ArrayList<ArrayList<Node>> enemySections;    // Connected sub Graph Parts of enemy nodes
+
+    // for debug
     private static final String TAG = "GPS";
     private static final boolean debug = false;
+
+    private static int[][] myCGPsToOthersDistances;
+    private static int[][] enemyCGPsToOtherDistances;
 
     /**
      * this map tells node is in which section
@@ -45,6 +50,8 @@ public class CGP {
         }
         Logger.log("my" + TAG, mySectionsToString, debug);
         Logger.log("enemy" + TAG, enemySections.toString(), debug);
+
+        calculateCGPDistanceToNodes();
     }
 
     /**
@@ -177,6 +184,62 @@ public class CGP {
      */
     public static ArrayList<ArrayList<Node>> getEnemyCGPBorders() {
         return getCGPBorders(enemySections);
+    }
+
+    /**
+     * this function returns minimum distance of Connected Graph which node src is in that
+     */
+    public static int calculateMyCGPDistance(Node src, Node dst){
+        return myCGPsToOthersDistances[CGP.getPartNumberOfNode(src)][dst.getIndex()];
+    }
+
+    /**
+     * this function calculates minimum distance of node dst to enemy nodes
+     */
+    public static int calculateMinEnemyCGPDistance(Node dst){
+
+        int min = Consts.INF;
+
+        for(int i = 0 ; i < CGP.getEnemySectionsCount() ; i++){
+            min = Math.min(min,enemyCGPsToOtherDistances[i][dst.getIndex()]);
+        }
+
+        return min;
+    }
+
+    private static void calculateCGPDistanceToNodes() {
+
+        int nodeCount = world.getMap().getNodes().length;
+        ArrayList<ArrayList<Node>> myCGParts = CGP.getMyCGParts();
+        ArrayList<ArrayList<Node>> enemiesCGParts = CGP.getEnemyCGParts();
+
+        myCGPsToOthersDistances = new int[CGP.getMySectionsCount()][nodeCount];
+        enemyCGPsToOtherDistances = new int[CGP.getEnemySectionsCount()][nodeCount];
+
+        for (int i = 0; i < CGP.getMySectionsCount(); i++) {
+
+            for (Node node : world.getMap().getNodes()) { // calculate minimum distance of a part to a node
+
+                int minimumDistance = Consts.INF;
+                for (Node myNodes : myCGParts.get(i)) {
+                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes.getIndex(), node.getIndex()));
+                }
+                myCGPsToOthersDistances[i][node.getIndex()] = minimumDistance;
+            }
+        }
+
+
+        for (int i = 0; i < CGP.getEnemySectionsCount(); i++) {
+
+            for (Node node : world.getMap().getNodes()) { // calculate minimum distance of a part to a node
+
+                int minimumDistance = Consts.INF;
+                for (Node myNodes : enemiesCGParts.get(i)) {
+                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes.getIndex(), node.getIndex()));
+                }
+                enemyCGPsToOtherDistances[i][node.getIndex()] = minimumDistance;
+            }
+        }
     }
 
 

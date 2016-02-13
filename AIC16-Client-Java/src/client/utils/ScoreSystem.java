@@ -7,14 +7,14 @@ import java.util.*;
 
 /**
  * Created by al on 2/12/16.
+ * The famous score system
  */
 public class ScoreSystem {
 
     private static World world;
     private static int nodeCount;
-    //    private static ArrayList<ScoreHolder> scores; //score[i][j] => score node[j] from node i point of view
-    private static int[][] myCGPsToOthersDistances;
-    private static int[][] enemyCGPsToOtherDistances;
+
+    // for debug purposes
     private static final boolean debug = true;
     private static final String TAG = "ScoreSystem";
 
@@ -27,35 +27,38 @@ public class ScoreSystem {
     /**
      * initialize method , before calling this you should first call CGP initializer
      *
-     * @param world
+     * @param world world of game
      */
     public static void initialize(World world) {
+
         ScoreSystem.world = world;
         nodeCount = world.getMap().getNodes().length;
         scoreMap = new HashMap<>();
-
         for (Node n : world.getMyNodes()) { //initialize hashMap's arrayList
             scoreMap.put(n.getIndex(), new ArrayList<>());
         }
         calculateScores();
 
-        for (Node n : world.getMyNodes()) {
-            ArrayList<ScoreHolder> tmp = scoreMap.get(n.getIndex());
+        for (Node node : world.getMyNodes()) {
+
+            // sorting the list
+            ArrayList<ScoreHolder> tmp = scoreMap.get(node.getIndex());
             Collections.sort(tmp);
+            scoreMap.put(node.getIndex(), tmp);
+
+            // Logging
             Logger.log(TAG, tmp.size() + "", debug);
             for (ScoreHolder score : tmp) {
                 Logger.log(TAG, score.toString(), debug);
             }
-            scoreMap.put(n.getIndex(), tmp);
         }
 
     }
 
-    //    TODO check if i am better than enemy , attack !
-    //    TODO neighbours of High level edge nodes must have a better priority
+    /**
+     * this method calculate scores from all of my nodes to all other nodes
+     */
     private static void calculateScores() {
-
-//        TODO this loop is bad for defence , add the defence mechanism method later
 
 //        calculate nodesEdgeCount
         int[] nodesEdgesCount = new int[nodeCount];
@@ -65,73 +68,62 @@ public class ScoreSystem {
         }
 
 
-        calculateCGPDistanceToNodes();
-
-        for (Node n : world.getMap().getNodes()) {
+        for (Node node : world.getMap().getNodes()) {
 
             for (Node myNode : world.getMyNodes()) {
 
-                int CGPDistance = myCGPsToOthersDistances[CGP.getPartNumberOfNode(myNode)][n.getIndex()];
-                int rawDistance = APSP.getDist(myNode.getIndex(), n.getIndex());
-                int ownerCoef;
-                if (n.getOwner() == -1) {     // owner is nodoby
-                    ownerCoef = Consts.EMPTY_COEF;
-                } else if (n.getOwner() == world.getMyID()) { // i am spartacus !
-                    ownerCoef = Consts.OWNER_COEF;
-                } else { // owner is enemy
-//                    if (ArmyLevel.ComputeArmyLevel(world, myNode).ordinal() > ArmyLevel.ComputeArmyLevel(world, n).ordinal()) {
-//                        ownerCoef = Consts.OWNER_COEF;
-//                    } else
-                    ownerCoef = Consts.ENEMY_COEF;
-                }
-                if (rawDistance == 0) // dont stay in your place man
+///             TODO enemyCGPDistance should make some influence on score
+                int CGPDistance = CGP.calculateMyCGPDistance(myNode, node);
+
+                int rawDistance = APSP.getDist(myNode.getIndex(), node.getIndex());
+
+                // calculating owner coef
+                int ownerCoef = calculateOwnerCoef(node, myNode);
+
+                if (rawDistance == 0) // don't stay in your place man
                     rawDistance = Consts.INF;
 
-                int score = ownerCoef + rawDistance * Consts.RAW_DISTANCE_COEF +
-                        Consts.EDGE_COUNT_COEF * (-1 * nodesEdgesCount[n.getIndex()]) +
-                        CGPDistance * Consts.CGP_DISTANCE_COEF;
-                scoreMap.get(myNode.getIndex()).add(new ScoreHolder(myNode.getIndex(), n.getIndex(), score));
+                int score = calculateScore(ownerCoef, rawDistance, nodesEdgesCount[node.getIndex()], CGPDistance);
+
+                // adding this score to the score list of myNode
+                scoreMap.get(myNode.getIndex()).add(new ScoreHolder(myNode.getIndex(), node.getIndex(), score));
             }
         }
 
     }
 
-    private static void calculateCGPDistanceToNodes() {
-        ArrayList<ArrayList<Node>> myCGParts = CGP.getMyCGParts();
-        ArrayList<ArrayList<Node>> enemiesCGParts = CGP.getEnemyCGParts();
 
-        myCGPsToOthersDistances = new int[CGP.getMySectionsCount()][nodeCount];
-        enemyCGPsToOtherDistances = new int[CGP.getEnemySectionsCount()][nodeCount];
+    private static int calculateScore(int ownerCoef, int rawDistance, int nodeEdgesCount, int myCGPDistance) {
+        return ownerCoef +
+                rawDistance * Consts.RAW_DISTANCE_COEF +
+                Consts.EDGE_COUNT_COEF * (-1 * nodeEdgesCount) +
+                myCGPDistance * Consts.CGP_DISTANCE_COEF;
+    }
 
-        for (int i = 0; i < CGP.getMySectionsCount(); i++) {
-
-            for (Node node : world.getMap().getNodes()) { // calculate minimum distance of a part to a node
-
-                int minimumDistance = Consts.INF;
-                for (Node myNodes : myCGParts.get(i)) {
-                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes.getIndex(), node.getIndex()));
-                }
-                myCGPsToOthersDistances[i][node.getIndex()] = minimumDistance;
-            }
+    private static int calculateOwnerCoef(Node otherNode, Node myNode) {
+        int ownerCoef;
+        if (otherNode.getOwner() == -1) {                     // owner is nobody
+            ownerCoef = Consts.EMPTY_COEF;
+        } else if (otherNode.getOwner() == world.getMyID()) { // i am spartacus !
+            ownerCoef = Consts.OWNER_COEF;
+        } else {                                         // owner is enemy
+            if (ArmyLevel.ComputeArmyLevel(world, myNode).ordinal() > ArmyLevel.ComputeArmyLevel(world, otherNode).ordinal()) {
+                ownerCoef = Consts.EMPTY_COEF;
+            } else
+                ownerCoef = Consts.ENEMY_COEF;
         }
 
-
-        for (int i = 0; i < CGP.getEnemySectionsCount(); i++) {
-
-            for (Node node : world.getMap().getNodes()) { // calculate minimum distance of a part to a node
-
-                int minimumDistance = Consts.INF;
-                for (Node myNodes : enemiesCGParts.get(i)) {
-                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes.getIndex(), node.getIndex()));
-                }
-                enemyCGPsToOtherDistances[i][node.getIndex()] = minimumDistance;
-            }
-        }
+        return ownerCoef;
     }
 
 
+    /**
+     * this method return a sorted list of ScoreHolder by score
+     * @param myNode i should be owner of this node
+     * @return null if i am not the owner of argument myNode
+     */
     public static ArrayList<ScoreHolder> getScoresListFromNode(Node myNode) {
-        return scoreMap.get(myNode.getIndex());
+        return scoreMap.getOrDefault(myNode.getIndex(),null);
     }
 
 

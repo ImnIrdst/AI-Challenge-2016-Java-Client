@@ -46,7 +46,7 @@ public class AI {
                         if (dst.getIndex() == score.getDstIndex()) {
                             isAPathAssignedToNode[score.getDstIndex()] = true;
 //                    TODO armycount/2 is not good
-                            world.moveArmy(score.getSrcIndex(), score.getDstIndex(), source.getArmyCount() / 2);
+                            world.moveArmy(score.getSrcIndex(), score.getDstIndex(), source.getArmyCount() );
                             breakFree = true;
                             break;
                         }
