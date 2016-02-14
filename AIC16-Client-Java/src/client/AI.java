@@ -55,9 +55,14 @@ public class AI {
                 continue;
 
             if (!NodeDetails.isAllNeighboursMine(source)) { //bfs to the best node
-                Path.bfsToTheBestNode(world, source);
+                Node target = world.getMap().getNode(ScoreSystem.getScoresListFromNode(source).get(0).getDstIndex());
+                Node moveTo = APSP.getNeighborOnThePath(source,target);
+                world.moveArmy(source,moveTo,source.getArmyCount());
+
                 continue;
             }
+
+//            there is a neighbour free node 100%
 
             for (ScoreHolder score : ScoreSystem.getScoresListFromNode(source)) {
 //                this loop's main concern is freeNodes , so we must mark it down so no two nodes will go to a free node

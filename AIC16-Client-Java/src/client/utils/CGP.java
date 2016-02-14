@@ -237,7 +237,7 @@ public class CGP {
 
                 int minimumDistance = Consts.INF;
                 for (Node myNodes : myCGParts.get(i)) {
-                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes.getIndex(), node.getIndex()));
+                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes, node));
                 }
                 myCGPsToOthersDistances[i][node.getIndex()] = minimumDistance;
             }
@@ -250,7 +250,7 @@ public class CGP {
 
                 int minimumDistance = Consts.INF;
                 for (Node myNodes : enemiesCGParts.get(i)) {
-                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes.getIndex(), node.getIndex()));
+                    minimumDistance = Math.min(minimumDistance, APSP.getDist(myNodes, node));
                 }
                 enemyCGPsToOtherDistances[i][node.getIndex()] = minimumDistance;
             }

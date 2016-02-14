@@ -20,6 +20,7 @@ public class ScoreSystem {
     private static final String TAG = "ScoreSystem";
 
     /**
+     * TODO HashMap Integer,TreeSet ScoreHolder have better performance
      * this map tells node and it score list to all destinations
      * for example scoreMap(3) => sorted ArrayList of ScoreHolder( score 85 , score 93 , ... )
      */
@@ -27,7 +28,6 @@ public class ScoreSystem {
 
     /**
      * initialize method , before calling this you should first call CGP initializer
-     *
      * @param world world of game
      */
     public static void initialize(World world) {
@@ -76,7 +76,7 @@ public class ScoreSystem {
 ///             TODO enemyCGPDistance should make some influence on score
                 int CGPDistance = CGP.calculateMyCGPDistance(myNode, node);
 
-                int rawDistance = APSP.getDist(myNode.getIndex(), node.getIndex());
+                int rawDistance = APSP.getDist(myNode, node);
 
                 // calculating owner coef
                 int ownerCoef = calculateOwnerCoef(node, myNode);

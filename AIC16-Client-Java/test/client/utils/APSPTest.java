@@ -8,11 +8,12 @@ import junit.framework.TestCase;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
 import static org.mockito.Mockito.*;
 
 /**
  * Created by iman on 2/11/16.
- *
+ * <p>
  * Tests utils.APSP Class
  */
 public class APSPTest extends TestCase {
@@ -25,7 +26,7 @@ public class APSPTest extends TestCase {
 		MockitoAnnotations.initMocks(this);
 	}
 
-	public void testAPSP(){
+	public void testAPSP() {
 		//                                        -> 3
 		// build a world with a Graph like this 1 -> 2 -> 0
 		Node[] nodes = new Node[4];
@@ -43,22 +44,35 @@ public class APSPTest extends TestCase {
 		// Mockito stubbing
 		when(world.getMap()).thenReturn(graph);
 
+		// Initialize APSP
 		APSP.initialize(world);
-		assertEquals(APSP.getDist(0, 0), 0);
-		assertEquals(APSP.getDist(0, 1), Consts.INF);
-		assertEquals(APSP.getDist(0, 2), Consts.INF);
-		assertEquals(APSP.getDist(0, 3), Consts.INF);
-		assertEquals(APSP.getDist(1, 0), 2);
-		assertEquals(APSP.getDist(1, 1), 0);
-		assertEquals(APSP.getDist(1, 2), 1);
-		assertEquals(APSP.getDist(1, 3), 1);
-		assertEquals(APSP.getDist(2, 0), 1);
-		assertEquals(APSP.getDist(2, 1), Consts.INF);
-		assertEquals(APSP.getDist(2, 2), 0);
-		assertEquals(APSP.getDist(2, 3), Consts.INF);
-		assertEquals(APSP.getDist(3, 0), Consts.INF);
-		assertEquals(APSP.getDist(3, 1), Consts.INF);
-		assertEquals(APSP.getDist(3, 2), Consts.INF);
-		assertEquals(APSP.getDist(3, 3), 0);
+
+		// Test getDist
+		assertEquals(APSP.getDist(nodes[0], nodes[0]), 0);
+		assertEquals(APSP.getDist(nodes[0], nodes[1]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[0], nodes[2]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[0], nodes[3]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[1], nodes[0]), 2);
+		assertEquals(APSP.getDist(nodes[1], nodes[1]), 0);
+		assertEquals(APSP.getDist(nodes[1], nodes[2]), 1);
+		assertEquals(APSP.getDist(nodes[1], nodes[3]), 1);
+		assertEquals(APSP.getDist(nodes[2], nodes[0]), 1);
+		assertEquals(APSP.getDist(nodes[2], nodes[1]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[2], nodes[2]), 0);
+		assertEquals(APSP.getDist(nodes[2], nodes[3]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[3], nodes[0]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[3], nodes[1]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[3], nodes[2]), Consts.INF);
+		assertEquals(APSP.getDist(nodes[3], nodes[3]), 0);
+
+		// Test getNeighborsOnThePath
+		assertEquals(APSP.getNeighborOnThePath(nodes[1], nodes[0]).getIndex(), nodes[2].getIndex());
+		assertEquals(APSP.getNeighborOnThePath(nodes[1], nodes[2]).getIndex(), nodes[2].getIndex());
+		assertEquals(APSP.getNeighborOnThePath(nodes[1], nodes[2]).getIndex(), nodes[2].getIndex());
+		assertEquals(APSP.getNeighborOnThePath(nodes[1], nodes[3]).getIndex(), nodes[3].getIndex());
+
+		// False Scenario: if source and destination are equal (re
+		assertEquals(APSP.getNeighborOnThePath(nodes[0], nodes[0]).getIndex(), nodes[0].getIndex());
+		assertEquals(APSP.getNeighborOnThePath(nodes[2], nodes[2]).getIndex(), nodes[2].getIndex());
 	}
 }
