@@ -3,6 +3,7 @@ package client.utils;
 import client.World;
 import client.model.Graph;
 import client.model.Node;
+import client.score.ScoreSystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,10 @@ import java.util.Queue;
  * Class to find path
  */
 public class Path {
+
+//    for debug
+    private static boolean debug = true;
+    private static final String TAG = "Path";
 
     public static ArrayList<Node> FindNearestEnemyNode(World world, Node from, Node to) {
         Queue<Node> Q = new LinkedList<>();
@@ -63,5 +68,21 @@ public class Path {
         }
 
         return Path;
+    }
+
+
+    /**
+     * this method finds the fist path to go if it want to go the best node possible
+     * in other words make path , but does not need to save it :D
+     * @param srcNode should be mine , otherwise safety is not guaranteed
+     */
+    public static void bfsToTheBestNode(World world, Node srcNode){
+        Node to = world.getMap().getNode(ScoreSystem.getScoresListFromNode(srcNode).get(0).getDstIndex());
+        ArrayList<Node> list = Path.FindNearestEnemyNode(world, srcNode, to);
+        Node dest = list.get(list.size() - 2);
+        world.moveArmy(srcNode, dest, srcNode.getArmyCount());
+
+        Logger.log(TAG, "created a path from " + srcNode.getIndex() +
+                " to " + to.getIndex() + " by neighbour " + dest.getIndex(), debug);
     }
 }

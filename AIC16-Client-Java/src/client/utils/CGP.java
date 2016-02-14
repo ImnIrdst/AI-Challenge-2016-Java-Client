@@ -4,6 +4,7 @@ import client.World;
 import client.model.Node;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by al on 2/11/16.
@@ -12,9 +13,16 @@ import java.util.*;
  */
 public class CGP {
 
+
     private static World world;
     private static ArrayList<ArrayList<Node>> mySections;       // Connected sub Graph Parts of my nodes
     private static ArrayList<ArrayList<Node>> enemySections;    // Connected sub Graph Parts of enemy nodes
+
+    //    for attacking system
+    private static ArrayList<Node> myFrontLiners;
+    private static ArrayList<Node> enemyFrontLiners;
+    private static ArrayList<Node> myBackups;
+    private static ArrayList<Node> enemyBackups;
 
     // for debug
     private static final String TAG = "GPS";
@@ -32,6 +40,13 @@ public class CGP {
     private static HashMap<Integer, Integer> enemyNodeSectionMap;
 
     public static void initialize(World world) {
+
+//        this object should be null for fist time of a cycle
+        myFrontLiners = null;
+        enemyFrontLiners = null;
+        myBackups = null;
+        enemyBackups = null;
+
         CGP.world = world;
         mySections = new ArrayList<>();
         enemySections = new ArrayList<>();
@@ -189,19 +204,19 @@ public class CGP {
     /**
      * this function returns minimum distance of Connected Graph which node src is in that
      */
-    public static int calculateMyCGPDistance(Node src, Node dst){
+    public static int calculateMyCGPDistance(Node src, Node dst) {
         return myCGPsToOthersDistances[CGP.getPartNumberOfNode(src)][dst.getIndex()];
     }
 
     /**
      * this function calculates minimum distance of node dst to enemy nodes
      */
-    public static int calculateMinEnemyCGPDistance(Node dst){
+    public static int calculateMinEnemyCGPDistance(Node dst) {
 
         int min = Consts.INF;
 
-        for(int i = 0 ; i < CGP.getEnemySectionsCount() ; i++){
-            min = Math.min(min,enemyCGPsToOtherDistances[i][dst.getIndex()]);
+        for (int i = 0; i < CGP.getEnemySectionsCount(); i++) {
+            min = Math.min(min, enemyCGPsToOtherDistances[i][dst.getIndex()]);
         }
 
         return min;
@@ -240,6 +255,73 @@ public class CGP {
                 enemyCGPsToOtherDistances[i][node.getIndex()] = minimumDistance;
             }
         }
+    }
+
+
+    private static ArrayList<Node> getFrontLiners(ArrayList<ArrayList<Node>> CGPSection) {
+
+        ArrayList<Node> frontLiners = new ArrayList<>();
+
+        for (ArrayList<Node> borderPart : CGPSection) {
+            frontLiners.addAll(borderPart.stream().filter(node -> NodeDetails.isEnemyNearby(world, node)).collect(Collectors.toList()));
+        }
+        return frontLiners;
+    }
+
+    private static ArrayList<Node> getAllBackups(ArrayList<ArrayList<Node>> CGPSection) {
+        ArrayList<Node> frontLiners = new ArrayList<>();
+
+        for (ArrayList<Node> borderPart : CGPSection) {
+            frontLiners.addAll(borderPart.stream().filter(node -> NodeDetails.isAllNeighboursSameAsOwner(node)).collect(Collectors.toList()));
+        }
+
+        return frontLiners;
+    }
+
+
+    /**
+     * this method get's the "Khate Moghadam" of mine
+     *
+     * @return arrayList of nodes which have a enemy nearby;
+     */
+    public static ArrayList<Node> getMyFrontLiners() {
+        if (myFrontLiners == null) myFrontLiners = getFrontLiners(getMyCGParts());
+        return myFrontLiners;
+    }
+
+
+    /**
+     * this method get's the "Khate Moghadam" of enemy ( fuck em hard till they die )
+     *
+     * @return arrayList of nodes which have a enemy nearby;
+     */
+    public static ArrayList<Node> getEnemyFrontLiners() {
+        if (enemyFrontLiners == null) enemyFrontLiners = getFrontLiners(getEnemyCGParts());
+        return enemyFrontLiners;
+    }
+
+    /**
+     * this method get's the nodes witch don't have a enemy node nearby
+     */
+    public static ArrayList<Node> getMyBackups() {
+        if (myBackups == null) myBackups = getAllBackups(getMyCGParts());
+        return myBackups;
+    }
+
+    /**
+     * this method get's the nodes witch don't have a enemy node nearby
+     * the enemy of my enemy node is my node :D
+     */
+    public static ArrayList<Node> getEnemyBackups() {
+        if (enemyBackups == null) enemyBackups = getAllBackups(getEnemyCGParts());
+        return enemyBackups;
+    }
+
+    /**
+     * this method simple tells if my node is in "Khate Moghadam" or is front liner
+     */
+    public static boolean isMyNodeFrontLiner(Node myNode) {
+        return getMyFrontLiners().contains(myNode);
     }
 
 

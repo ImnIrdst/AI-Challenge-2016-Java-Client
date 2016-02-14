@@ -32,26 +32,32 @@ public class AI {
         Node[] myNodes = world.getMyNodes();
         Logger.log(TAG, world.getMyNodes().length + " tedade node haye man", debug);
         boolean[] isAPathAssignedToNode = new boolean[world.getMap().getNodes().length];
+
+//        important job is fighting ! going to backup ! etc
+        boolean[] isImportantJobAssignedToNode = new boolean[world.getMap().getNodes().length];
+
+        Arrays.fill(isImportantJobAssignedToNode, false);
         Arrays.fill(isAPathAssignedToNode, false);
 
         for (Node source : myNodes) {
-            if (!NodeDetails.isAllNeighboursMine(source)) { //bfs to the best node
-                Node to = world.getMap().getNode(ScoreSystem.getScoresListFromNode(source).get(0).getDstIndex());
-                ArrayList<Node> list = Path.FindNearestEnemyNode(world, source, to);
-                Node dest = list.get(list.size() - 2);
-                world.moveArmy(source, dest, source.getArmyCount());
 
-                Logger.log(TAG, "created a path from " + source.getIndex() +
-                        " to " + to.getIndex() + " by neighbour " + dest.getIndex(), debug);
+
+
+            if (isImportantJobAssignedToNode[source.getIndex()])
+                continue;
+
+            if (!NodeDetails.isAllNeighboursMine(source)) { //bfs to the best node
+                Path.bfsToTheBestNode(world,source);
                 continue;
             }
 
             for (ScoreHolder score : ScoreSystem.getScoresListFromNode(source)) {
-//                NodeDetails.isFreeNode(world, score.getDstIndex()) &&
+//                this loop's main concern is freeNodes , so we must mark it down so no two nodes will go to a free node
                 if (isAPathAssignedToNode[score.getDstIndex()])
                     continue;
 
                 boolean breakFree = false;
+
                 for (Node dst : source.getNeighbours()) {
                     if (dst.getIndex() == score.getDstIndex()) {
                         isAPathAssignedToNode[score.getDstIndex()] = true;
