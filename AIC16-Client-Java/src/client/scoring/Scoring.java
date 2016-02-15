@@ -26,7 +26,7 @@ public class Scoring {
 	public static void computeAffect(Node source, Node target) {
 		// if target is one of the source neighbors
 		for (NodeScorePair neighbor: target.getNeighborScores()){
-			neighbor.score += Scores.computeScoresFromPriority(source, neighbor.node);
+			neighbor.score += Scores.computeScoresFromPriority(source, neighbor.node, target);
 		}
 	}
 

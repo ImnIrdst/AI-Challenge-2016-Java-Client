@@ -10,8 +10,18 @@ public class NodeScorePair implements Comparable<NodeScorePair> {
 	public Node node;
 	public long score;
 
+	public NodeScorePair(Node node, long score) {
+		this.node = node;
+		this.score = score;
+	}
+
+	@Override
+	public String toString() {
+		return "(" + node.getIndex() + ", " + score + ") ";
+	}
+
 	@Override
 	public int compareTo(NodeScorePair o) {
-		return Long.compare(score, o.score); // TODO: maybe must be reversed.
+		return Long.compare(o.score, score); // TODO: maybe must be reversed.
 	}
 }

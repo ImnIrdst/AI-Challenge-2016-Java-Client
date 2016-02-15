@@ -12,15 +12,17 @@ import client.utils.NodeUtils;
 public enum NodePriority {
 	ALLY_BEAST(1),
 	ALLY_WEAK(1),
+	ALLY_MEDIOCRE(1),
 	ALLY_STRONG(1),
 	ALLY_SAFE(1),
 	ALLY_ON_EDGE(1),
-	EMPTY_SAFE(100),
+	ALLY_IN_DANGER(1),
+	EMPTY_SAFE(200),
 	EMPTY_IN_DANGER(1),
-	ENEMY_WEAK(1),
-	ENEMY_MEDIOCRE(1),
-	ENEMY_STRONG(1),
-	ALLY_IN_DANGER(1);
+	ENEMY_WEAK(80),
+	ENEMY_MEDIOCRE(80),
+	ENEMY_STRONG(80);
+
 
 	int score;
 
@@ -35,45 +37,55 @@ public enum NodePriority {
 
 	// TODO: Reorder ifs.
 	public static void computeNodePriority(World world, Node node){
-		if (isEmptySafe(world, node)) node.priority = EMPTY_SAFE;
-		else if (isAllyWeak(world, node)) node.priority = ALLY_WEAK;
-		else if (isAllyStrong(world, node)) node.priority = ALLY_STRONG;
-		else if (isEnemyWeak(world , node)) node.priority = ENEMY_WEAK;
-		else if (isEnemyMediocre(world, node)) node.priority = ENEMY_MEDIOCRE;
-		else if (isEnemyStrong(world, node)) node.priority = ENEMY_STRONG;
+		if (isEmptySafe(node)) node.priority = EMPTY_SAFE;
+		else if (isAllyWeak(node)) node.priority = ALLY_WEAK;
+		else if (isAllyMediocre(node)) node.priority = ALLY_MEDIOCRE;
+		else if (isAllyStrong(node)) node.priority = ALLY_STRONG;
+		else if (isEnemyWeak(node)) node.priority = ENEMY_WEAK;
+		else if (isEnemyMediocre(node)) node.priority = ENEMY_MEDIOCRE;
+		else if (isEnemyStrong(node)) node.priority = ENEMY_STRONG;
+		else node = node;
 	}
+
+
+
 	// TODO: this only checks emptiness, add other states.
-	public static boolean isEmptySafe(World world, Node node){
+	public static boolean isEmptySafe(Node node){
 		return NodeUtils.isEmptyNode(node);
 	}
 
 	// TODO: check around nodes.
-	private static boolean isAllyWeak(World world, Node node) {
+	private static boolean isAllyWeak(Node node) {
 		return NodeUtils.isAllyNode(node)
-				&& ArmyLevel.ComputeArmyLevel(world, node) == ArmyLevel.ArmyLevelEnum.Low;
+				&& ArmyLevel.ComputeArmyLevel(node) == ArmyLevel.ArmyLevelEnum.Low;
 	}
 
-	// TODO: check around nodes.
-	private static boolean isAllyStrong(World world, Node node) {
+	private static boolean isAllyMediocre(Node node) {
 		return NodeUtils.isAllyNode(node)
-				&& ArmyLevel.ComputeArmyLevel(world, node) == ArmyLevel.ArmyLevelEnum.High;
+				&& ArmyLevel.ComputeArmyLevel(node) == ArmyLevel.ArmyLevelEnum.Medium;
 	}
 
 	// TODO: check around nodes.
-	private static boolean isEnemyWeak(World world, Node node) {
-		return NodeUtils.isEmptyNode(node)
-				&& ArmyLevel.ComputeArmyLevel(world, node) == ArmyLevel.ArmyLevelEnum.Low;
+	private static boolean isAllyStrong(Node node) {
+		return NodeUtils.isAllyNode(node)
+				&& ArmyLevel.ComputeArmyLevel(node) == ArmyLevel.ArmyLevelEnum.High;
 	}
 
 	// TODO: check around nodes.
-	private static boolean isEnemyMediocre(World world, Node node) {
-		return NodeUtils.isEmptyNode(node)
-				&& ArmyLevel.ComputeArmyLevel(world, node) == ArmyLevel.ArmyLevelEnum.Medium;
+	private static boolean isEnemyWeak(Node node) {
+		return NodeUtils.isEnemyNode(node)
+				&& ArmyLevel.ComputeArmyLevel(node) == ArmyLevel.ArmyLevelEnum.Low;
 	}
 
 	// TODO: check around nodes.
-	private static boolean isEnemyStrong(World world, Node node) {
-		return NodeUtils.isEmptyNode(node)
-				&& ArmyLevel.ComputeArmyLevel(world, node) == ArmyLevel.ArmyLevelEnum.High;
+	private static boolean isEnemyMediocre(Node node) {
+		return NodeUtils.isEnemyNode(node)
+				&& ArmyLevel.ComputeArmyLevel(node) == ArmyLevel.ArmyLevelEnum.Medium;
+	}
+
+	// TODO: check around nodes.
+	private static boolean isEnemyStrong(Node node) {
+		return NodeUtils.isEnemyNode(node)
+				&& ArmyLevel.ComputeArmyLevel(node) == ArmyLevel.ArmyLevelEnum.High;
 	}
 }

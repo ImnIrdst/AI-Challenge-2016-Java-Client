@@ -1,5 +1,6 @@
 package client.utils;
 
+import client.AI;
 import client.World;
 import client.model.Node;
 

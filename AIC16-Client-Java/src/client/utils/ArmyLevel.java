@@ -10,6 +10,8 @@ import client.model.Node;
  */
 public class ArmyLevel {
 
+    private static World world;
+
     public enum ArmyLevelEnum {
         FreeNode,
         Low,
@@ -17,18 +19,23 @@ public class ArmyLevel {
         High
     }
 
-    public static ArmyLevelEnum ComputeArmyLevel(World world, Node node) {
-        if (node.getOwner() == -1) {
+    public static void initialize(World world){
+        ArmyLevel.world = world;
+    }
+
+    public static ArmyLevelEnum ComputeArmyLevel(Node node) {
+        if (NodeUtils.isEmptyNode(node)) { // IF Empty Node
             return ArmyLevelEnum.FreeNode;
-        } else {
-            int armyCount = node.getArmyCount();
-            if (armyCount < world.getLowArmyBound()) {
-                return ArmyLevelEnum.Low;
-            } else if (armyCount < world.getMediumArmyBound()) {
-                return ArmyLevelEnum.Medium;
-            } else {
-                return ArmyLevelEnum.High;
-            }
+
+        } else if (NodeUtils.isAllyNode(node)){ // If Ally Node
+            if (node.getArmyCount() < world.getLowArmyBound()) return ArmyLevelEnum.Low;
+            else if (node.getArmyCount() < world.getMediumArmyBound()) return ArmyLevelEnum.Medium;
+            else return ArmyLevelEnum.High;
+
+        } else { // If Enemy Node
+            if (node.getArmyCount() == 0) return ArmyLevelEnum.Low;
+            else if (node.getArmyCount() == 1) return ArmyLevelEnum.Medium;
+            else return ArmyLevelEnum.High;
         }
     }
 }

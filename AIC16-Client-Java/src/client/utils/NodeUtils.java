@@ -9,11 +9,9 @@ import client.scoring.NodePriority;
  *
  */
 public class NodeUtils {
-	public static int myID;
+	public static World world;
 
-	public static void initialize(World world){
-		myID = world.getMyID();
-	}
+	public static void initialize(World world){ NodeUtils.world = world; }
 
 	/**
 	 * checks if node v exists in u.neighbors list.
@@ -25,17 +23,12 @@ public class NodeUtils {
 		return -1;
 	}
 
-
-	public static NodePriority computeNodeType(Node node){
-		return NodePriority.ALLY_IN_DANGER; // TODO: Complete this.
-	}
-
 	public static boolean isAllyNode(Node node){
-		return node.getOwner() == myID;
+		return node.getOwner() == world.getMyID();
 	}
 
 	public static boolean isEnemyNode(Node node){
-		return node.getOwner() == 1 - myID;
+		return node.getOwner() == 1 - world.getMyID();
 	}
 
 	public static boolean isEmptyNode(Node node) {

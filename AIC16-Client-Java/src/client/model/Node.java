@@ -78,7 +78,7 @@ public class Node implements Comparable<Node> {
         this.neighbours = neighbours;
 	    this.neighborScores = new NodeScorePair[neighbours.length];
 	    for (int i=0 ; i<neighbours.length ; i++)
-		    this.neighborScores[i].node = neighbours[i];
+		    this.neighborScores[i] = new NodeScorePair(neighbours[i], 0);
     }
 
     public void setOwner(int owner) {
@@ -95,6 +95,8 @@ public class Node implements Comparable<Node> {
 
 	@Override
 	public int compareTo(Node o) {
-		return priority.compareTo(o.priority);
+		if (priority == null)
+            return Integer.compare(o.getOwner(), getOwner());
+        return o.priority.compareTo(priority);
 	}
 }
