@@ -23,7 +23,6 @@ import java.util.Arrays;
  */
 public class AI {
     private String TAG = "AI";
-    private World world;
     private boolean isInitialized = false;
 
     private void initialize(World world){
@@ -33,7 +32,6 @@ public class AI {
         Logger.log(TAG, "Map Levels: " + world.getLowArmyBound() + ", " + world.getMediumArmyBound() , true);
 
         isInitialized = true;
-        this.world = world;
         APSP.initialize(world);
         CGP.initialize(world);
         NodeUtils.initialize(world);
@@ -44,18 +42,27 @@ public class AI {
         initialize(world);
 
         // fill this method, we've presented a stupid AI for example!
-        Node[] myNodes = world.getMyNodes();
-
         Logger.log(TAG, "My nodes qty: " + world.getMyNodes().length, true);
 
 
 
         // fill this method,
         NodePriority.computeAllNodesPriority(world);
+
+
+
+        // Sort by priority
         NodeIdPriorityPair[] ids = new NodeIdPriorityPair[world.getMap().getNodes().length];
         for (int i=0 ; i<ids.length ; i++) ids[i] = new NodeIdPriorityPair(world.getMap().getNode(i));
 
         Arrays.sort(ids);
+
+        // compute nodeScores
+        Scoring.computeScoresForAllNodes(world, ids);
+
+        //Log the Mine and Enemy Nodes
+        Logger.log(TAG, "Ally Nodes: " + world.getMyNodes().length, true);
+        Logger.log(TAG, "Enemy Nodes: " + world.getOpponentNodes().length, true);
 
         for (NodeIdPriorityPair id : ids){
             Node node = world.getMap().getNode(id.id);
@@ -64,34 +71,30 @@ public class AI {
             if (NodeUtils.isAllyNode(node)) owner = "Ally ";
             if (NodeUtils.isEnemyNode(node)) owner = "Enemy ";
             if (NodeUtils.isEmptyNode(node)) owner = "Empty ";
-            Logger.log(TAG, owner + " Node: (" + node.getIndex() + ", " + node.getOwner() + ", "
-                    + node.getArmyCount() + ") " + node.getPriority(), true);
+//            if (NodeUtils.isEmptyNode(node)) continue;
+            Logger.log(TAG, owner + " Node: (" + node.getIndex() + ", "
+                    + ArmyLevel.getEnemyAndNeighboursApproxArmy(node) + ", "
+                    + node.getArmyCount() + ") " + node.getPriority(), false);
         }
 
-        // compute nodeScores
-        Scoring.computeScoresForAllNodes(world);
-
-        boolean[] emptyNodesAssigned = new boolean[world.getMap().getNodes().length];
-
         for (Node cur : world.getMap().getNodes()) {
-            if(cur.neighborScores.length == 0  || !NodeUtils.isAllyNode(cur)) continue;
+            if(cur.getNeighborScores().length == 0  || !NodeUtils.isAllyNode(cur)) continue;
 
-            NodeScorePair[] neighbourScores = cur.neighborScores;
+            NodeScorePair[] neighbourScores = cur.getNeighborScores();
             Arrays.sort(neighbourScores);
-            for (NodeScorePair neighbour : neighbourScores) {
-                if (NodeUtils.isEmptyNode(neighbour.node)
-                        && emptyNodesAssigned[neighbour.node.getIndex()]) continue;
 
-                if (NodeUtils.isEmptyNode(neighbour.node))
-                    emptyNodesAssigned[neighbour.node.getIndex()] = true;
+            Node target = neighbourScores[0].node;
+            world.moveArmy(cur, target, cur.getArmyCount());
 
-                world.moveArmy(cur, neighbour.node, cur.getArmyCount()); break;
+            // If Target is an empty node cancel its affect on other nodes.
+            Scoring.computeAffectOfANodeToAllAllyNodes(world, target, -1);
+
+            if (NodeUtils.isEnemyNode(target) && NodeUtils.isAllyNode(cur)) {
+                int diff = ArmyLevel.getEnemyAndNeighboursApproxArmy(cur) - ArmyLevel.getEnemyAndNeighboursApproxArmy(target);
+                Logger.log(TAG, "" + diff, false);
             }
         }
 
-        Logger.log(TAG, Arrays.toString(emptyNodesAssigned), false);
-        System.out.println("=======================================================");
-        System.out.println("=======================================================");
         System.out.println("=======================================================");
     }
 

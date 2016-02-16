@@ -18,7 +18,7 @@ public class NodeIdPriorityPair implements Comparable<NodeIdPriorityPair> {
 
 	public NodeIdPriorityPair(Node node){
 		this.id = node.getIndex();
-		this.priority = node.priority;
+		this.priority = node.getPriority();
 	}
 
 	@Override

@@ -34,4 +34,14 @@ public class NodeUtils {
 	public static boolean isEmptyNode(Node node) {
 		return !isAllyNode(node) && !isEnemyNode(node);
 	}
+
+	public static int getNearestEnemyDistanceToAllyNode(Node node){
+		int minDistance = Consts.INF;
+		for (Node enemy : world.getOpponentNodes()){
+			minDistance = Math.min(minDistance, APSP.getDist(node, enemy));
+		}
+		return minDistance;
+	}
+
+
 }
