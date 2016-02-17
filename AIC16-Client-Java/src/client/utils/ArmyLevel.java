@@ -23,6 +23,8 @@ public class ArmyLevel {
         ArmyLevel.world = world;
     }
 
+    public static World getWorld(){ return world; }
+
     public static ArmyLevelEnum computeArmyLevel(Node node) {
         if (NodeUtils.isEmptyNode(node)) { // IF Empty Node
             return ArmyLevelEnum.FreeNode;
@@ -130,4 +132,6 @@ public class ArmyLevel {
     public static int getExceedStrongArmy(Node node){
         return node.getArmyCount() - world.getMediumArmyBound();
     }
+
+
 }

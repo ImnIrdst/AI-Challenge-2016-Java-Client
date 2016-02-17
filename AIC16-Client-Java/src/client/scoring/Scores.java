@@ -19,7 +19,7 @@ public class Scores {
 	public static final int MULTIPLE_ALLYS_NEAR = -100;
 
 	// Coefficients
-	public static final int EDGES_COUNT_COEFFICIENT = 1;
+	public static final int EDGES_COUNT_COEFFICIENT = -5;
 	public static final int ENEMY_LEVEL_DIFFERENCE_COEFFICIENT = 50;
 	public static final int ATTACKING_DIFFERENCE_COEF = 50;
 

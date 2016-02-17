@@ -43,8 +43,6 @@ public class AI {
 		initialize(world);
 
 		// fill this method, we've presented a stupid AI for example!
-		Logger.log(TAG, "My nodes qty: " + world.getMyNodes().length, true);
-
 
 		// fill this method,
 		NodePriority.computeAllNodesPriority(world);
@@ -90,21 +88,10 @@ public class AI {
 			Arrays.sort(neighbourScores);
 
 			Node target = neighbourScores[0].node;
-//            for (NodeScorePair neighbour: neighbourScores){
-//                if (NodeUtils.isEmptyNode(neighbour.node)){
-//                    target = neighbour.node; break;
-//                }
-//                if (!NodeUtils.isInDanger(neighbour.node)){
-//                    target = neighbour.node; break;
-//                }
-//            }
 
-//            if (NodeUtils.isEnemyNode(target))
-//                // Attacking
-//                world.moveArmy(cur, target, cur.getArmyCount());
-//            else
+
 			// non Attacking
-			world.moveArmy(cur, target, cur.getArmyCount() - cur.getSelfNeed());
+			world.moveArmy(cur, target, getMinimumToAttack(world, cur, target));
 
 
 			// If Target is an empty node cancel its affect on other nodes.
@@ -115,4 +102,25 @@ public class AI {
 		System.out.println("=======================================================");
 	}
 
+	public static int getMinimumToAttack(World world, Node source, Node target) {
+		return source.getArmyCount() - source.getSelfNeed();
+//		if (!NodeUtils.isEnemyNode(target)
+//				|| (ArmyLevel.computeArmyLevel(source).ordinal() <= ArmyLevel.computeArmyLevel(target).ordinal()
+//					&& !ArmyLevel.isStrong(source)))
+//			return source.getArmyCount() - source.getSelfNeed();
+//
+//		if(source.getArmyCount() > world.getMediumArmyBound() * 2)
+//			return source.getArmyCount() / 2;
+//
+//		switch (ArmyLevel.computeArmyLevel(target)) {
+//			case STRONG:
+//				return (int) (Math.min(world.getMediumArmyBound() * 1.5, source.getArmyCount()));
+//			case MEDIOCRE:
+//				return world.getMediumArmyBound();
+//			case WEAK:
+//				return world.getLowArmyBound();
+//		}
+//
+//		return 0;
+	}
 }
