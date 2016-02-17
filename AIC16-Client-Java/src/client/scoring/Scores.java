@@ -56,9 +56,10 @@ public class Scores {
 					(long) Math.pow(DISTANCE_EXPONENTIAL_BASE / 5, NodeUtils.getNearestEnemyDistanceToAllyNode(source));
 		}
 		// Supporting phase
-//		if (NodeUtils.isAllyNode(source) && NodeUtils.isAllyNode(target) && !NodePriority.isInDanger(source)){
-//
-//		}
+		if (NodeUtils.isAllyNode(source) && NodeUtils.isAllyNode(target)){
+			score += (-1) * source.getArmyCount();
+			score += 5 * NodeUtils.getDangerLevel(source);
+		}
 		// Fade with distance.
 		score /= (long) Math.pow(DISTANCE_EXPONENTIAL_BASE, APSP.getDist(source, neighbour));
 
