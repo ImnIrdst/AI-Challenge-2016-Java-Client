@@ -10,21 +10,23 @@ import client.utils.NodeUtils;
  *
  */
 public enum NodePriority {
-	ENEMY_STRONG(50),
+	ENEMY_STRONG(300),
+
 	EMPTY_IN_DANGER(1),
 	ALLY_BEAST(1),
 
-	ALLY_STRONG_SAFE(20),
-	ALLY_MEDIOCRE_SAFE(50),
-	ALLY_WEAK_SAFE(100),
+	ALLY_STRONG_SAFE(30),
+	ALLY_MEDIOCRE_SAFE(40),
+	ALLY_WEAK_SAFE(50),
 
-	ALLY_STRONG_IN_DANGER(20),
-	ALLY_MEDIOCRE_IN_DANGER(50),
-	ALLY_WEAK_IN_DANGER(100),
+	ALLY_STRONG_IN_DANGER(30),
+	ALLY_MEDIOCRE_IN_DANGER(40),
+	ALLY_WEAK_IN_DANGER(50),
 
-	EMPTY_SAFE(500),
-	ENEMY_MEDIOCRE(100),
-	ENEMY_WEAK(100);
+	EMPTY_SAFE(600),
+
+	ENEMY_MEDIOCRE(400),
+	ENEMY_WEAK(500);
 
 	int SCORE;
 
@@ -41,22 +43,20 @@ public enum NodePriority {
 	public static void computeNodePriority(Node node) {
 		if (isEmptySafe(node)) node.setPriority(EMPTY_SAFE);
 
-		else if (isAllyWeak(node) && !isInDanger(node)) node.setPriority(ALLY_WEAK_SAFE);
-		else if (isAllyMediocre(node) && !isInDanger(node)) node.setPriority(ALLY_MEDIOCRE_SAFE);
-		else if (isAllyStrong(node) && !isInDanger(node)) node.setPriority(ALLY_STRONG_SAFE);
+		else if (isAllyWeak(node) && !NodeUtils.isInDanger(node)) node.setPriority(ALLY_WEAK_SAFE);
+		else if (isAllyMediocre(node) && !NodeUtils.isInDanger(node)) node.setPriority(ALLY_MEDIOCRE_SAFE);
+		else if (isAllyStrong(node) && !NodeUtils.isInDanger(node)) node.setPriority(ALLY_STRONG_SAFE);
 
-		else if (isAllyWeak(node) && isInDanger(node)) node.setPriority(ALLY_WEAK_IN_DANGER);
-		else if (isAllyMediocre(node) && isInDanger(node)) node.setPriority(ALLY_MEDIOCRE_IN_DANGER);
-		else if (isAllyStrong(node) && isInDanger(node)) node.setPriority(ALLY_STRONG_IN_DANGER);
+		else if (isAllyWeak(node) && NodeUtils.isInDanger(node)) node.setPriority(ALLY_WEAK_IN_DANGER);
+		else if (isAllyMediocre(node) && NodeUtils.isInDanger(node)) node.setPriority(ALLY_MEDIOCRE_IN_DANGER);
+		else if (isAllyStrong(node) && NodeUtils.isInDanger(node)) node.setPriority(ALLY_STRONG_IN_DANGER);
 
 		else if (isEnemyWeak(node)) node.setPriority(ENEMY_WEAK);
 		else if (isEnemyMediocre(node)) node.setPriority(ENEMY_MEDIOCRE);
 		else if (isEnemyStrong(node)) node.setPriority(ENEMY_STRONG);
 	}
 
-	public static boolean isInDanger(Node node) {
-		return ArmyLevel.isEnemyAndNeighboursApproxStrong(node);
-	}
+
 
 
 	// TODO: this only checks emptiness, add other states.

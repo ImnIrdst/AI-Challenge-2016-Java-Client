@@ -107,7 +107,7 @@ public class ArmyLevel {
     }
 
     public static boolean isEnemyAndNeighboursApproxStrong(Node node){
-        return getEnemyAndNeighboursApproxArmy(node) >= world.getMediumArmyBound();
+        return getEnemyAndNeighboursApproxArmy(node) >= getStrongLevelMid();
     }
 
     public static boolean isApproxWeak(int weakCnt, int mediocreCnt, int strongCnt){
@@ -121,5 +121,13 @@ public class ArmyLevel {
 
     public static boolean isApproxStrong(int weakCnt, int mediocreCnt, int strongCnt){
         return getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) >= world.getMediumArmyBound();
+    }
+
+    public static boolean canProduceStrongArmy(Node node){
+        return node.getArmyCount() > world.getMediumArmyBound()*2;
+    }
+
+    public static int getExceedStrongArmy(Node node){
+        return node.getArmyCount() - world.getMediumArmyBound();
     }
 }

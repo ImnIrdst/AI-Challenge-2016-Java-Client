@@ -14,7 +14,7 @@ public class Node implements Comparable<Node> {
     private Node[] neighbours;
 
 	// Defined by me.
-	public long selfScore;
+	public int selfNeed;
 	private NodePriority priority;
 
 
@@ -92,12 +92,12 @@ public class Node implements Comparable<Node> {
         this.armyCount = armyCount;
     }
 
-    public long getSelfScore() {
-        return selfScore;
+    public int getSelfNeed() {
+        return selfNeed;
     }
 
-    public void setSelfScore(long selfScore) {
-        this.selfScore = selfScore;
+    public void setSelfNeed(int selfNeed) {
+        this.selfNeed = selfNeed;
     }
 
     public void setPriority(NodePriority priority) {

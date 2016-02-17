@@ -35,13 +35,55 @@ public class NodeUtils {
 		return !isAllyNode(node) && !isEnemyNode(node);
 	}
 
+	public static boolean isBoundaryNode(Node node) {
+		for (Node neighbour : node.getNeighbours())
+			if (isEmptyNode(neighbour)) return true;
+		return false;
+	}
+
+	public static boolean isInDanger(Node node) {
+		return ArmyLevel.isEnemyAndNeighboursApproxStrong(node);
+	}
+
+	public static int getNearestEnemyCount(Node node){
+		int minDistance = getNearestAllyDistanceToEmptyNode(node);
+
+		int result = 0;
+		for (Node ally : world.getMyNodes())
+			if (minDistance == APSP.getDist(node, ally)) result++;
+
+		return result;
+	}
+
 	public static int getNearestEnemyDistanceToAllyNode(Node node){
 		int minDistance = Consts.INF;
-		for (Node enemy : world.getOpponentNodes()){
+		for (Node enemy : world.getOpponentNodes())
 			minDistance = Math.min(minDistance, APSP.getDist(node, enemy));
-		}
 		return minDistance;
 	}
 
+	public static int getNearestAllyDistanceToEmptyNode(Node node){
+		int minDistance = Consts.INF;
+		for (Node ally : world.getMyNodes())
+			minDistance = Math.min(minDistance, APSP.getDist(node, ally));
+		return minDistance;
+	}
 
+	public static long getDangerLevel(Node node) {
+		return ArmyLevel.getEnemyAndNeighboursApproxArmy(node);
+	}
+
+	public static int getEmptyNodesCount(){
+		int cnt = 0;
+		for (Node node : world.getMap().getNodes())
+			if (NodeUtils.isEmptyNode(node)) cnt++;
+		return cnt;
+	}
+
+	public static int getMyBoundaryNodesCount(){
+		int cnt = 0;
+		for (Node node : world.getMyNodes())
+			if (NodeUtils.isBoundaryNode(node)) cnt++;
+		return cnt;
+	}
 }

@@ -8,6 +8,7 @@ import client.scoring.Scoring;
 import client.utils.*;
 import common.util.Log;
 import jdk.nashorn.internal.runtime.WithObject;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.NodeType;
 
 import java.util.Arrays;
 
@@ -22,80 +23,96 @@ import java.util.Arrays;
  * See World interface for more details.
  */
 public class AI {
-    private String TAG = "AI";
-    private boolean isInitialized = false;
+	private String TAG = "AI";
+	private boolean isInitialized = false;
 
-    private void initialize(World world){
-        if (isInitialized) return;
+	private void initialize(World world) {
+		if (isInitialized) return;
 
-        Logger.log(TAG, "My ID: " + world.getMyID(), true);
-        Logger.log(TAG, "Map Levels: " + world.getLowArmyBound() + ", " + world.getMediumArmyBound() , true);
+		Logger.log(TAG, "My ID: " + world.getMyID(), true);
+		Logger.log(TAG, "Map Levels: " + world.getLowArmyBound() + ", " + world.getMediumArmyBound(), true);
 
-        isInitialized = true;
-        APSP.initialize(world);
-        CGP.initialize(world);
-        NodeUtils.initialize(world);
-        ArmyLevel.initialize(world);
-    }
+		isInitialized = true;
+		APSP.initialize(world);
+		CGP.initialize(world);
+		NodeUtils.initialize(world);
+		ArmyLevel.initialize(world);
+	}
 
-    public void doTurn(World world) {
-        initialize(world);
+	public void doTurn(World world) {
+		initialize(world);
 
-        // fill this method, we've presented a stupid AI for example!
-        Logger.log(TAG, "My nodes qty: " + world.getMyNodes().length, true);
-
-
-
-        // fill this method,
-        NodePriority.computeAllNodesPriority(world);
+		// fill this method, we've presented a stupid AI for example!
+		Logger.log(TAG, "My nodes qty: " + world.getMyNodes().length, true);
 
 
+		// fill this method,
+		NodePriority.computeAllNodesPriority(world);
 
-        // Sort by priority
-        NodeIdPriorityPair[] ids = new NodeIdPriorityPair[world.getMap().getNodes().length];
-        for (int i=0 ; i<ids.length ; i++) ids[i] = new NodeIdPriorityPair(world.getMap().getNode(i));
 
-        Arrays.sort(ids);
+		// Sort by priority
+		NodeIdPriorityPair[] ids = new NodeIdPriorityPair[world.getMap().getNodes().length];
+		for (int i = 0; i < ids.length; i++) ids[i] = new NodeIdPriorityPair(world.getMap().getNode(i));
 
-        // compute nodeScores
-        Scoring.computeScoresForAllNodes(world, ids);
+		Arrays.sort(ids);
 
-        //Log the Mine and Enemy Nodes
-        Logger.log(TAG, "Ally Nodes: " + world.getMyNodes().length, true);
-        Logger.log(TAG, "Enemy Nodes: " + world.getOpponentNodes().length, true);
+		// compute nodeScores
+		Scoring.cleanScoresForAllNodes(world);
+		Scoring.computeScoresForAllNodes(world, ids);
 
-        for (NodeIdPriorityPair id : ids){
-            Node node = world.getMap().getNode(id.id);
+		//Log the Mine and Enemy Nodes
+		Logger.log(TAG, "Ally Nodes: " + world.getMyNodes().length, true);
+		Logger.log(TAG, "Enemy Nodes: " + world.getOpponentNodes().length, true);
 
-            String owner = "";
-            if (NodeUtils.isAllyNode(node)) owner = "Ally ";
-            if (NodeUtils.isEnemyNode(node)) owner = "Enemy ";
-            if (NodeUtils.isEmptyNode(node)) owner = "Empty ";
-//            if (NodeUtils.isEmptyNode(node)) continue;
-            Logger.log(TAG, owner + " Node: (" + node.getIndex() + ", "
-                    + ArmyLevel.getEnemyAndNeighboursApproxArmy(node) + ", "
-                    + node.getArmyCount() + ") " + node.getPriority(), false);
-        }
+		for (NodeIdPriorityPair id : ids) {
+			Node node = world.getMap().getNode(id.id);
 
-        for (Node cur : world.getMap().getNodes()) {
-            if(cur.getNeighborScores().length == 0  || !NodeUtils.isAllyNode(cur)) continue;
+			String owner = "";
+			if (NodeUtils.isAllyNode(node)) owner = "Ally ";
+			if (NodeUtils.isEnemyNode(node)) owner = "Enemy ";
+			if (NodeUtils.isEmptyNode(node)) owner = "Empty ";
+			if (NodeUtils.isEmptyNode(node)) continue;
 
-            NodeScorePair[] neighbourScores = cur.getNeighborScores();
-            Arrays.sort(neighbourScores);
+			String scores = "[ ";
+			for (NodeScorePair neighbour : node.getNeighborScores()) {
+				scores += neighbour.node.getArmyCount() + " " + neighbour.score + ", ";
+			}
+			scores += "]";
 
-            Node target = neighbourScores[0].node;
-            world.moveArmy(cur, target, cur.getArmyCount());
+			Logger.log(TAG, owner + " Node: (" + node.getArmyCount() + ", "
+					+ NodeUtils.getNearestEnemyDistanceToAllyNode(node) + ") " + node.getPriority() + scores, false);
+		}
 
-            // If Target is an empty node cancel its affect on other nodes.
-            Scoring.computeAffectOfANodeToAllAllyNodes(world, target, -1);
+		for (Node cur : world.getMap().getNodes()) {
+			if (cur.getNeighborScores().length == 0 || !NodeUtils.isAllyNode(cur)) continue;
 
-            if (NodeUtils.isEnemyNode(target) && NodeUtils.isAllyNode(cur)) {
-                int diff = ArmyLevel.getEnemyAndNeighboursApproxArmy(cur) - ArmyLevel.getEnemyAndNeighboursApproxArmy(target);
-                Logger.log(TAG, "" + diff, false);
-            }
-        }
+			NodeScorePair[] neighbourScores = cur.getNeighborScores();
+			Arrays.sort(neighbourScores);
 
-        System.out.println("=======================================================");
-    }
+			Node target = neighbourScores[0].node;
+//            for (NodeScorePair neighbour: neighbourScores){
+//                if (NodeUtils.isEmptyNode(neighbour.node)){
+//                    target = neighbour.node; break;
+//                }
+//                if (!NodeUtils.isInDanger(neighbour.node)){
+//                    target = neighbour.node; break;
+//                }
+//            }
+
+//            if (NodeUtils.isEnemyNode(target))
+//                // Attacking
+//                world.moveArmy(cur, target, cur.getArmyCount());
+//            else
+			// non Attacking
+			world.moveArmy(cur, target, cur.getArmyCount() - cur.getSelfNeed());
+
+
+			// If Target is an empty node cancel its affect on other nodes.
+			if (NodeUtils.isEmptyNode(target))
+				Scoring.computeAffectOfANodeToAllAllyNodes(world, target, -1);
+		}
+
+		System.out.println("=======================================================");
+	}
 
 }
