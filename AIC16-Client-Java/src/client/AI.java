@@ -6,9 +6,6 @@ import client.scoring.NodePriority;
 import client.scoring.NodeScorePair;
 import client.scoring.Scoring;
 import client.utils.*;
-import common.util.Log;
-import jdk.nashorn.internal.runtime.WithObject;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.NodeType;
 
 import java.util.Arrays;
 
@@ -90,19 +87,12 @@ public class AI {
 			Arrays.sort(neighbourScores);
 
 			Node target = neighbourScores[0].node;
-//            for (NodeScorePair neighbour: neighbourScores){
-//                if (NodeUtils.isEmptyNode(neighbour.node)){
-//                    target = neighbour.node; break;
-//                }
-//                if (!NodeUtils.isInDanger(neighbour.node)){
-//                    target = neighbour.node; break;
-//                }
-//            }
 
-//            if (NodeUtils.isEnemyNode(target))
-//                // Attacking
-//                world.moveArmy(cur, target, cur.getArmyCount());
-//            else
+			// If you are attacking but loosing in it, but you can be level up, remain in your self
+			if(isLoseInFight(cur, target) && NodeUtils.canBeLevelUp(cur))
+				cur.setSelfNeed(cur.getArmyCount());
+
+
 			// non Attacking
 			world.moveArmy(cur, target, cur.getArmyCount() - cur.getSelfNeed());
 
@@ -113,6 +103,11 @@ public class AI {
 		}
 
 		System.out.println("=======================================================");
+	}
+
+	private boolean isLoseInFight(Node ally, Node enemy) {
+		return ArmyLevel.computeArmyLevel(ally).ordinal()
+				< ArmyLevel.computeArmyLevel(enemy).ordinal();
 	}
 
 }

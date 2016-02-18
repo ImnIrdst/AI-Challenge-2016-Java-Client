@@ -86,4 +86,16 @@ public class NodeUtils {
 			if (NodeUtils.isBoundaryNode(node)) cnt++;
 		return cnt;
 	}
+
+	public static boolean canBeLevelUp(Node node) {
+		return (ArmyLevel.computeArmyLevel(node).ordinal()
+				< ArmyLevel.computeArmyLevel(node.getArmyCount() + getAllyEdgeCount(node)).ordinal());
+	}
+
+	private static int getAllyEdgeCount(Node node) {
+		int cnt = 0;
+		for (Node neighbour : node.getNeighbours())
+			if (NodeUtils.isAllyNode(neighbour)) cnt++;
+		return cnt;
+	}
 }

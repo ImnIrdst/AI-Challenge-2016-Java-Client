@@ -28,8 +28,8 @@ public class ArmyLevel {
             return ArmyLevelEnum.FreeNode;
 
         } else if (NodeUtils.isAllyNode(node)){ // If Ally Node
-            if (node.getArmyCount() < world.getLowArmyBound()) return ArmyLevelEnum.WEAK;
-            else if (node.getArmyCount() < world.getMediumArmyBound()) return ArmyLevelEnum.MEDIOCRE;
+            if (node.getArmyCount() <= world.getLowArmyBound()) return ArmyLevelEnum.WEAK;
+            else if (node.getArmyCount() <= world.getMediumArmyBound()) return ArmyLevelEnum.MEDIOCRE;
             else return ArmyLevelEnum.STRONG;
 
         } else { // If Enemy Node
@@ -37,6 +37,14 @@ public class ArmyLevel {
             else if (node.getArmyCount() == 1) return ArmyLevelEnum.MEDIOCRE;
             else return ArmyLevelEnum.STRONG;
         }
+    }
+
+    public static ArmyLevelEnum computeArmyLevel(int armyCount) {
+        if (armyCount <= world.getLowArmyBound())
+            return ArmyLevelEnum.WEAK;
+        if (armyCount <= world.getMediumArmyBound())
+            return ArmyLevelEnum.MEDIOCRE;
+        return ArmyLevelEnum.STRONG;
     }
 
     public static boolean isWeak(Node node){
@@ -98,12 +106,12 @@ public class ArmyLevel {
     }
 
     public static boolean isEnemyAndNeighboursApproxWeak(Node node){
-        return getEnemyAndNeighboursApproxArmy(node) < world.getLowArmyBound();
+        return getEnemyAndNeighboursApproxArmy(node) <= world.getLowArmyBound();
     }
 
     public static boolean isEnemyAndNeighboursApproxMediocre(Node node){
-        return getEnemyAndNeighboursApproxArmy(node) >= world.getLowArmyBound()
-                && getEnemyAndNeighboursApproxArmy(node) < world.getMediumArmyBound();
+        return getEnemyAndNeighboursApproxArmy(node) > world.getLowArmyBound()
+                && getEnemyAndNeighboursApproxArmy(node) <= world.getMediumArmyBound();
     }
 
     public static boolean isEnemyAndNeighboursApproxStrong(Node node){
@@ -111,16 +119,16 @@ public class ArmyLevel {
     }
 
     public static boolean isApproxWeak(int weakCnt, int mediocreCnt, int strongCnt){
-        return getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) < world.getLowArmyBound();
+        return getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) <= world.getLowArmyBound();
     }
 
     public static boolean isApproxMediocre(int weakCnt, int mediocreCnt, int strongCnt){
-        return getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) >= world.getLowArmyBound()
-                && getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) < world.getMediumArmyBound();
+        return getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) > world.getLowArmyBound()
+                && getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) <= world.getMediumArmyBound();
     }
 
     public static boolean isApproxStrong(int weakCnt, int mediocreCnt, int strongCnt){
-        return getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) >= world.getMediumArmyBound();
+        return getEnemyAndNeighboursApproxArmy(weakCnt, mediocreCnt, strongCnt) > world.getMediumArmyBound();
     }
 
     public static boolean canProduceStrongArmy(Node node){

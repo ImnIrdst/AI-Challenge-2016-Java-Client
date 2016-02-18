@@ -19,7 +19,7 @@ public class Scores {
 	public static final int MULTIPLE_ALLYS_NEAR = -100;
 
 	// Coefficients
-	public static final int EDGES_COUNT_COEFFICIENT = 1;
+	public static final int EDGES_COUNT_COEFFICIENT = -1;
 	public static final int ENEMY_LEVEL_DIFFERENCE_COEFFICIENT = 50;
 	public static final int ATTACKING_DIFFERENCE_COEF = 50;
 
@@ -56,9 +56,7 @@ public class Scores {
 					(long) Math.pow(DISTANCE_EXPONENTIAL_BASE / 5, NodeUtils.getNearestEnemyDistanceToAllyNode(source));
 		}
 		// Supporting phase
-//		if (NodeUtils.isAllyNode(source) && NodeUtils.isAllyNode(target) && !NodePriority.isInDanger(source)){
-//
-//		}
+
 		// Fade with distance.
 		score /= (long) Math.pow(DISTANCE_EXPONENTIAL_BASE, APSP.getDist(source, neighbour));
 
