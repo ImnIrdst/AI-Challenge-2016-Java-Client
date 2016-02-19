@@ -1,12 +1,13 @@
 Branch: iman-ripper-code
 ---------------------------------------------
 map,	runAs,	opponent,	cycles,	result
-eye,	second,	Enderman,	,		Win
-eye,	first,	Enderman,	,		Win
-eye,	second, KhBaShakh3,	,		win
-eye,	first,	KhBaShakh3,	,		win
-eye,	second,	IUTBax,		,		win
-eye,	first,	IUTBax,		,		Lose
+,
+eye,	second,	Enderman,	14,		Win
+eye,	first,	Enderman,	10,		Win
+eye,	second, KhBaShakh3,	11,		win
+eye,	first,	KhBaShakh3,	11,		win
+eye,	second,	IUTBax,		25,		Lose 
+eye,	first,	IUTBax,		15,		Lose 
 ,
 dota,	second, Enderman,	,		Win
 dota,	first,	Enderman,	,		Win
@@ -15,10 +16,10 @@ dota,	first,	KhBaShakh3	, 	Win (Also lose)
 dota,	second, IUTBax,		,		Win 
 dota,	first,	IUTBax,		,		Win
 ,
-grid,	second,	Enderman,	,		Win
-grid,	first,	Enderman,	,		Win
-grid,	second,	KhBaShakh3,	,		Win
-grid,	first,	KhBaShakh3,	,		Win
+grid,	second,	Enderman,	32,		Win
+grid,	first,	Enderman,	27,		Win
+grid,	second,	KhBaShakh3,	27,		Win
+grid,	first,	KhBaShakh3,	29,		Win
 grid,	second,	IUTBax,		25,		Win
 grid,	first,	IUTBax,		29,		Win
 ,
