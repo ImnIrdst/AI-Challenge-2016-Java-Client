@@ -68,8 +68,8 @@ public class Scoring {
 //				"EmptyNodes: " + NodeUtils.getEmptyNodesCount() + " " +
 //				"MyBoundaryNodes: " + NodeUtils.getMyBoundaryNodesCount(), false);
 //		if (NodeUtils.getEmptyNodesCount() <= NodeUtils.getMyBoundaryNodesCount()){
-		if (ArmyLevel.canProduceStrongArmy(node))
-			node.setSelfNeed(node.getArmyCount() - ArmyLevel.getExceedStrongArmy(node));
+//		if (ArmyLevel.canProduceStrongArmy(node))
+//			node.setSelfNeed(node.getArmyCount() - ArmyLevel.getExceedStrongArmy(node));
 //			else
 //				node.setSelfNeed(node.getArmyCount()/2);
 //		}

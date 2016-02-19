@@ -39,11 +39,7 @@ public class AI {
 	public void doTurn(World world) {
 		initialize(world);
 
-		// fill this method, we've presented a stupid AI for example!
-		Logger.log(TAG, "My nodes qty: " + world.getMyNodes().length, true);
-
-
-		// fill this method,
+		// Compute Nodes Priority
 		NodePriority.computeAllNodesPriority(world);
 
 
@@ -57,10 +53,15 @@ public class AI {
 		Scoring.cleanScoresForAllNodes(world);
 		Scoring.computeScoresForAllNodes(world, ids);
 
-		//Log the Mine and Enemy Nodes
+		//Log The Ally and Enemy Nodes
 		Logger.log(TAG, "Ally Nodes: " + world.getMyNodes().length, true);
 		Logger.log(TAG, "Enemy Nodes: " + world.getOpponentNodes().length, true);
 
+
+		int[] nodeNextMoves = new int[world.getMap().getNodes().length];
+
+
+		// do moves
 		for (NodeIdPriorityPair id : ids) {
 			Node node = world.getMap().getNode(id.id);
 
@@ -89,22 +90,25 @@ public class AI {
 			Arrays.sort(neighbourScores);
 
 			Node target = neighbourScores[0].node;
-//            for (NodeScorePair neighbour: neighbourScores){
-//                if (NodeUtils.isEmptyNode(neighbour.node)){
-//                    target = neighbour.node; break;
-//                }
-//                if (!NodeUtils.isInDanger(neighbour.node)){
-//                    target = neighbour.node; break;
-//                }
-//            }
+            for (NodeScorePair neighbour: neighbourScores){
+                if (nodeNextMoves[neighbour.node.getIndex()] <= world.getMediumArmyBound()) {
+	                target = neighbour.node; break;
+                }
+            }
+
+			int armyThatMustBeMoved = Math.min(
+					cur.getArmyCount(),
+					world.getMediumArmyBound() - nodeNextMoves[target.getIndex()] + 1
+			);
 
 //            if (NodeUtils.isEnemyNode(target))
 //                // Attacking
 //                world.moveArmy(cur, target, cur.getArmyCount());
 //            else
 			// non Attacking
-			world.moveArmy(cur, target, cur.getArmyCount() - cur.getSelfNeed());
+			world.moveArmy(cur, target, armyThatMustBeMoved);
 
+			nodeNextMoves[target.getIndex()] += armyThatMustBeMoved;
 
 			// If Target is an empty node cancel its affect on other nodes.
 			if (NodeUtils.isEmptyNode(target))
