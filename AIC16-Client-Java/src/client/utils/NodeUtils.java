@@ -40,6 +40,12 @@ public class NodeUtils {
 		return false;
 	}
 
+	public static boolean isBorderLineNode(Node node){
+		for (Node neighbour : node.getNeighbours())
+			if (isEmptyNode(neighbour) || isEnemyNode(neighbour)) return true;
+		return false;
+	}
+
 	public static boolean isInDanger(Node node) {
 		return ArmyLevel.isEnemyAndNeighboursApproxStrong(node);
 	}
