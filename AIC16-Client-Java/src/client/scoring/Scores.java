@@ -16,12 +16,14 @@ public class Scores {
 	// Scores
 	public static final int BORDER_ALLYS_SCORE = 300;
 	public static final int DANGEROUS_CELL = -100;
-	public static final int MULTIPLE_ALLYS_NEAR = -100;
+
 
 	// Coefficients
 	public static final int EDGES_COUNT_COEFFICIENT = -1;
 	public static final int ENEMY_LEVEL_DIFFERENCE_COEFFICIENT = 50;
 	public static final int ATTACKING_DIFFERENCE_COEF = 50;
+	public static final int MULTIPLE_ALLYS_NEAR_COEFFICIENT = 50;
+	public static final int FARTHEST_EMPTY_CELL_COEFFICIENT = 10;
 
 	// other
 	public static final int DISTANCE_EXPONENTIAL_BASE = 10;
@@ -32,15 +34,17 @@ public class Scores {
 		// Add NodePriority Scores
 		score += source.getPriority().SCORE;
 
-		if (source.getPriority() == NodePriority.EMPTY_SAFE && NodeUtils.getNearestEnemyCount(source) > 1)
-			score += MULTIPLE_ALLYS_NEAR;
+		score += MULTIPLE_ALLYS_NEAR_COEFFICIENT * NodeUtils.getNearestAllyCount(source);
+
 
 
 		if (source.getPriority() == NodePriority.EMPTY_SAFE)
 			score /= (long) Math.pow(2, APSP.getDist(source, neighbour));
 
-		// Node with more edges must be captures first
 		score += source.getNeighbours().length * EDGES_COUNT_COEFFICIENT;
+
+		// Node with more edges must be captures first
+
 
 		// Attacking phase.
 		if (NodeUtils.isEnemyNode(source) && NodeUtils.isAllyNode(target)) {
@@ -53,7 +57,7 @@ public class Scores {
 
 		if (NodeUtils.isAllyNode(source) && NodeUtils.isAllyNode(target)) {
 			score += BORDER_ALLYS_SCORE /
-					(long) Math.pow(DISTANCE_EXPONENTIAL_BASE / 5, NodeUtils.getNearestEnemyDistanceToAllyNode(source));
+					(long) Math.pow(DISTANCE_EXPONENTIAL_BASE / 5, NodeUtils.getNearestEnemyDistanceToNode(source));
 		}
 		// Supporting phase
 //		if (NodeUtils.isAllyNode(source) && NodeUtils.isAllyNode(target) && !NodePriority.isInDanger(source)){

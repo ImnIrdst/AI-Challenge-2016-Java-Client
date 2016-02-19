@@ -6,9 +6,6 @@ import client.scoring.NodePriority;
 import client.scoring.NodeScorePair;
 import client.scoring.Scoring;
 import client.utils.*;
-import common.util.Log;
-import jdk.nashorn.internal.runtime.WithObject;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.NodeType;
 
 import java.util.Arrays;
 
@@ -80,10 +77,12 @@ public class AI {
 			scores += "]";
 
 			Logger.log(TAG, owner + " Node: (" + node.getArmyCount() + ", "
-					+ NodeUtils.getNearestEnemyDistanceToAllyNode(node) + ") " + node.getPriority() + scores, false);
+					+ NodeUtils.getNearestEnemyDistanceToNode(node) + ") " + node.getPriority() + scores, false);
 		}
 
-		for (Node cur : world.getMap().getNodes()) {
+		for (NodeIdPriorityPair id: ids) {
+			Node cur = world.getMap().getNode(id.id);
+
 			if (cur.getNeighborScores().length == 0 || !NodeUtils.isAllyNode(cur)) continue;
 
 			NodeScorePair[] neighbourScores = cur.getNeighborScores();
