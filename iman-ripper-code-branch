@@ -1,0 +1,81 @@
+Branch: iman-ripper-code
+---------------------------------------------
+map,	runAs,	opponent,	cycles,	result
+eye,	second,	Enderman,	,		Win
+eye,	first,	Enderman,	,		Win
+eye,	second, KhBaShakh3,	,		win
+eye,	first,	KhBaShakh3,	,		win
+eye,	second,	IUTBax,		,		win
+eye,	first,	IUTBax,		,		Lose
+,
+dota,	second, Enderman,	,		Win
+dota,	first,	Enderman,	,		Win
+dota,	second,	KhBaShakh3	,		Win (Also lose)
+dota,	first,	KhBaShakh3	, 	Win (Also lose)
+dota,	second, IUTBax,		,		Win 
+dota,	first,	IUTBax,		,		Win
+,
+grid,	second,	Enderman,	,		Win
+grid,	first,	Enderman,	,		Win
+grid,	second,	KhBaShakh3,	,		Win
+grid,	first,	KhBaShakh3,	,		Win
+grid,	second,	IUTBax,		25,		Win
+grid,	first,	IUTBax,		29,		Win
+,
+tiny,	second,	Enderman	,		Win
+tiny,	first,	Enderman	,		Win
+tiny,	second,	KhBaShakh3	,		Win
+tiny,	first,	KhBaShakh3	,		Win
+tiny,	second,	IUTBax		,		Win
+tiny,	first,	IUTBax		,		Lose
+,
+6-5-6,	second,	Enderman,	,		Win
+6-5-6,	first,	Enderman,	,		Win
+6-5-6,	second,	KhBaShakh3,	,		Lose
+6-5-6,	first,	KhBaShakh3,	,		Lose
+6-5-6,	second,	IUTBax,		,		Lose (Can be win) (1)
+6-5-6,	first,	IUTBax,		,		Win
+I-I,	second,	Enderman,	,		Win
+I-I,	first,	Enderman,	,		Win
+I-I,	second,	KhBaShakh3,	,		Win
+I-I,	first,	KhBaShakh3,	,		Win
+I-I,	second,	IUTBax,		,		Win
+I-I,	first,	IUTBax,		,		Win
+Boxes,	second,	Enderman,	,		Lose (Maybe win) 
+Boxes,	first,	Enderman,	,		Lose (Maybe win) 
+Boxes,	second,	KhBaShakh3,	,		Lose (Can be win)
+Boxes,	first,	KhBaShakh3,	,		Lose (Can be win)
+Boxes,	second,	IUTBax,		,		Win
+Boxes,	first,	IUTBax,		,		Win 
+Psrgad,	second,	Enderman,	,		Win
+Psrgad,	first,	Enderman,	,		Win
+Psrgad,	second,	KhBaShakh3,	,		Win
+Psrgad,	first,	KhBaShakh3,	,		Lose (Can be win)
+Psrgad,	second,	IUTBax,		,		Win
+Psrgad,	first,	IUTBax,		,		Lose (Maybe win) (Also win)
+bridge,	second,	Enderman,	,	Lose (Maybe win)
+bridge,	first,	Enderman,	,		Win
+bridge,	second,	KhBaShakh3,	,		Lose
+bridge,	first,	KhBaShakh3,	,		Lose
+bridge,	second,	IUTBax,		,	Draw
+bridge,	first,	IUTBax,		,	Draw
+PocFce,	second,	Enderman,	,		Win
+PocFce,	first,	Enderman,	,		Win
+PocFce,	second,	KhBaShakh3,	,		Lose (Can be win) (1)
+PocFce,	first,	KhBaShakh3,	,		Lose
+PocFce,	second,	IUTBax,		,		Lose
+PocFce,	first,	IUTBax,		,		Win
+sample,	second,	Enderman	,	Draw
+sample,	first,	Enderman	,	Draw
+sample,	second,	KhBaShakh3	,	Draw
+sample,	first,	KhBaShakh3	,	Draw
+sample,	second,	IUTBax		,	Draw
+sample,	first,	IUTBax		,	Draw
+
+I-I,	second,	Enderman,	,		Win
+I-I,	first,	Enderman,	,		Win
+I-I,	second,	KhBaShakh3,	,		Win
+I-I,	first,	KhBaShakh3,	,		Lose
+I-I,	second,	IUTBax,		,		Lose (Can be win) 
+I-I,	first,	IUTBax,		,		Win
+
