@@ -24,15 +24,15 @@ public class ArmyLevel {
     }
 
     public static ArmyLevelEnum computeArmyLevel(Node node) {
-        if (NodeUtils.isEmptyNode(node)) { // IF Empty Node
+        if (NodeUtils.isEmptyNode(node)) { // IF Empty PairingNode
             return ArmyLevelEnum.FreeNode;
 
-        } else if (NodeUtils.isAllyNode(node)){ // If Ally Node
+        } else if (NodeUtils.isAllyNode(node)){ // If Ally PairingNode
             if (node.getArmyCount() < world.getLowArmyBound()) return ArmyLevelEnum.WEAK;
             else if (node.getArmyCount() < world.getMediumArmyBound()) return ArmyLevelEnum.MEDIOCRE;
             else return ArmyLevelEnum.STRONG;
 
-        } else { // If Enemy Node
+        } else { // If Enemy PairingNode
             if (node.getArmyCount() == 0) return ArmyLevelEnum.WEAK;
             else if (node.getArmyCount() == 1) return ArmyLevelEnum.MEDIOCRE;
             else return ArmyLevelEnum.STRONG;

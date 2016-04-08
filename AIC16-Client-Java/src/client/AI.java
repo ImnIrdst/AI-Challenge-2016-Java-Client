@@ -77,7 +77,7 @@ public class AI {
 			}
 			scores += "]";
 
-			Logger.log(TAG, owner + " Node: (" + node.getArmyCount() + ", "
+			Logger.log(TAG, owner + " PairingNode: (" + node.getArmyCount() + ", "
 					+ NodeUtils.getNearestEnemyDistanceToNode(node) + ") " + node.getPriority() + scores, false);
 		}
 

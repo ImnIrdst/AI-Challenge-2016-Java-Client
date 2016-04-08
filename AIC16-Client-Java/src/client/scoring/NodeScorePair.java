@@ -4,7 +4,7 @@ import client.model.Node;
 
 /**
  * Created by iman on 2/14/16.
- * Pairs an Score With a Node
+ * Pairs an Score With a PairingNode
  */
 public class NodeScorePair implements Comparable<NodeScorePair> {
 	public Node node;

@@ -44,7 +44,7 @@ public class Scores {
 
 		score += source.getNeighbours().length * EDGES_COUNT_COEFFICIENT;
 
-		// Node with more edges must be captures first
+		// PairingNode with more edges must be captures first
 
 
 		// Attacking phase.

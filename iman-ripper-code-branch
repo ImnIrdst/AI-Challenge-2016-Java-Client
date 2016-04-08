@@ -2,81 +2,72 @@ Branch: iman-ripper-code
 ---------------------------------------------
 map,	runAs,	opponent,	cycles,	result
 ,
-eye,	second,	Enderman,	14,		Win
+eye,	second,	Enderman,	11,		Win
 eye,	first,	Enderman,	10,		Win
-eye,	second, KhBaShakh3,	11,		win
-eye,	first,	KhBaShakh3,	11,		win
-eye,	second,	IUTBax,		25,		Lose 
-eye,	first,	IUTBax,		15,		Lose 
+eye,	second, KhBaShakh3,	11,		Win
+eye,	first,	KhBaShakh3,	10,		Win
+eye,	second,	IUTBax,		11,		Win 
+eye,	first,	IUTBax,		13,		Win 
 ,
-dota,	second, Enderman,	,		Win
-dota,	first,	Enderman,	,		Win
-dota,	second,	KhBaShakh3	,		Win (Also lose)
-dota,	first,	KhBaShakh3	, 	Win (Also lose)
-dota,	second, IUTBax,		,		Win 
-dota,	first,	IUTBax,		,		Win
+dota,	second, Enderman,	16,		Win
+dota,	first,	Enderman,	16,		Win
+dota,	second,	KhBaShakh3	23,		Lose (He Sends one armycount when enemy cant reach undiscovered node)
+dota,	first,	KhBaShakh3	17, 	Win
+dota,	second, IUTBax,		14,		Win 
+dota,	first,	IUTBax,		15,		Win
 ,
-grid,	second,	Enderman,	32,		Win
-grid,	first,	Enderman,	27,		Win
-grid,	second,	KhBaShakh3,	27,		Win
-grid,	first,	KhBaShakh3,	29,		Win
-grid,	second,	IUTBax,		25,		Win
-grid,	first,	IUTBax,		29,		Win
+grid,	second,	Enderman,	23,		Win
+grid,	first,	Enderman,	24,		Win
+grid,	second,	KhBaShakh3,	36,		Win
+grid,	first,	KhBaShakh3,	30,		Win
+grid,	second,	IUTBax,		27,		Win
+grid,	first,	IUTBax,		25,		Win
 ,
-tiny,	second,	Enderman	,		Win
-tiny,	first,	Enderman	,		Win
-tiny,	second,	KhBaShakh3	,		Win
-tiny,	first,	KhBaShakh3	,		Win
-tiny,	second,	IUTBax		,		Win
-tiny,	first,	IUTBax		,		Lose
+tiny,	second,	Enderman	14,		Win
+tiny,	first,	Enderman	11,		Win
+tiny,	second,	KhBaShakh3	11,		Win
+tiny,	first,	KhBaShakh3	12,		Win
+tiny,	second,	IUTBax		17,		Win
+tiny,	first,	IUTBax		15,		Win
 ,
-6-5-6,	second,	Enderman,	,		Win
-6-5-6,	first,	Enderman,	,		Win
-6-5-6,	second,	KhBaShakh3,	,		Lose
-6-5-6,	first,	KhBaShakh3,	,		Lose
-6-5-6,	second,	IUTBax,		,		Lose (Can be win) (1)
-6-5-6,	first,	IUTBax,		,		Win
-I-I,	second,	Enderman,	,		Win
-I-I,	first,	Enderman,	,		Win
-I-I,	second,	KhBaShakh3,	,		Win
-I-I,	first,	KhBaShakh3,	,		Win
-I-I,	second,	IUTBax,		,		Win
-I-I,	first,	IUTBax,		,		Win
-Boxes,	second,	Enderman,	,		Lose (Maybe win) 
-Boxes,	first,	Enderman,	,		Lose (Maybe win) 
-Boxes,	second,	KhBaShakh3,	,		Lose (Can be win)
-Boxes,	first,	KhBaShakh3,	,		Lose (Can be win)
-Boxes,	second,	IUTBax,		,		Win
-Boxes,	first,	IUTBax,		,		Win 
-Psrgad,	second,	Enderman,	,		Win
-Psrgad,	first,	Enderman,	,		Win
-Psrgad,	second,	KhBaShakh3,	,		Win
-Psrgad,	first,	KhBaShakh3,	,		Lose (Can be win)
-Psrgad,	second,	IUTBax,		,		Win
-Psrgad,	first,	IUTBax,		,		Lose (Maybe win) (Also win)
-bridge,	second,	Enderman,	,	Lose (Maybe win)
-bridge,	first,	Enderman,	,		Win
-bridge,	second,	KhBaShakh3,	,		Lose
-bridge,	first,	KhBaShakh3,	,		Lose
-bridge,	second,	IUTBax,		,	Draw
-bridge,	first,	IUTBax,		,	Draw
-PocFce,	second,	Enderman,	,		Win
-PocFce,	first,	Enderman,	,		Win
-PocFce,	second,	KhBaShakh3,	,		Lose (Can be win) (1)
-PocFce,	first,	KhBaShakh3,	,		Lose
-PocFce,	second,	IUTBax,		,		Lose
-PocFce,	first,	IUTBax,		,		Win
-sample,	second,	Enderman	,	Draw
-sample,	first,	Enderman	,	Draw
-sample,	second,	KhBaShakh3	,	Draw
-sample,	first,	KhBaShakh3	,	Draw
-sample,	second,	IUTBax		,	Draw
-sample,	first,	IUTBax		,	Draw
-
-I-I,	second,	Enderman,	,		Win
-I-I,	first,	Enderman,	,		Win
-I-I,	second,	KhBaShakh3,	,		Win
-I-I,	first,	KhBaShakh3,	,		Lose
-I-I,	second,	IUTBax,		,		Lose (Can be win) 
-I-I,	first,	IUTBax,		,		Win
-
+6-5-6,	second,	Enderman,	19,		Win
+6-5-6,	first,	Enderman,	28,		Win
+6-5-6,	second,	KhBaShakh3,	16,		Lose (He Sends one armycount when enemy cant reach undiscovered node)
+6-5-6,	first,	KhBaShakh3,	21,		Lose
+6-5-6,	second,	IUTBax,		99,		Lose (He Sends one armycount when enemy cant reach undiscovered node)
+6-5-6,	first,	IUTBax,		18,		Win
+,
+I-I,	second,	Enderman,	26,		Win
+I-I,	first,	Enderman,	22,		Win
+I-I,	second,	KhBaShakh3,	27,		Lose (He Sends one armycount when enemy cant reach undiscovered node)
+I-I,	first,	KhBaShakh3,	30,		Win (Also Lose) 
+I-I,	second,	IUTBax,		99,		Lose
+I-I,	first,	IUTBax,		92, 	Win
+,
+Boxes,	second,	Enderman,	17,		Win
+Boxes,	first,	Enderman,	13,		Win
+Boxes,	second,	KhBaShakh3,	15,		Lose (Also Win)
+Boxes,	first,	KhBaShakh3,	20,		Win
+Boxes,	second,	IUTBax,		15,		Lose (Can be win by increasing score of Empty Safe Cell)
+Boxes,	first,	IUTBax,		11,		Lose
+,
+bridge,	second,	Enderman,	99,		Lose (Bug)
+bridge,	first,	Enderman,	17,		Win
+bridge,	second,	KhBaShakh3,	12,		Lose
+bridge,	first,	KhBaShakh3,	14,		Lose 
+bridge,	second,	IUTBax,		99,		Draw
+bridge,	first,	IUTBax,		99,		Draw
+, 
+Psrgad,	second,	Enderman,	21,		Win
+Psrgad,	first,	Enderman,	25,		Win (Also Lose)
+Psrgad,	second,	KhBaShakh3,	9,		Lose (Neighbours Ignoring bug affects this map so much)
+Psrgad,	first,	KhBaShakh3,	14,		Lose
+Psrgad,	second,	IUTBax,		17,		Win
+Psrgad,	first,	IUTBax,		10,		Lose
+,
+PocFce,	second,	Enderman,	99,		Draw (Bug)
+PocFce,	first,	Enderman,	22,		Lose
+PocFce,	second,	KhBaShakh3,	8,		Lose 
+PocFce,	first,	KhBaShakh3,	11,		Lose
+PocFce,	second,	IUTBax,		17,		Win
+PocFce,	first,	IUTBax,		10,		Lose

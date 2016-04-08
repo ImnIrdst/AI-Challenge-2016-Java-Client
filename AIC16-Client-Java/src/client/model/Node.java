@@ -4,7 +4,7 @@ import client.scoring.NodeScorePair;
 import client.scoring.NodePriority;
 
 /**
- * Graph Node
+ * Graph PairingNode
  * Please do not change this class.
  */
 public class Node implements Comparable<Node> {
